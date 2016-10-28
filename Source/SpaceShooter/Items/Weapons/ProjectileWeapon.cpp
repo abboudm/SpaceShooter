@@ -19,6 +19,21 @@ AProjectileWeapon::AProjectileWeapon(const class FObjectInitializer& PCIP) : Sup
 	ShotTraces = 1;
 }
 
+void AProjectileWeapon::UpdateItem(FItem item)
+{
+	SelfItem = item;
+	SelfItem.WeaponType = WeaponType;
+	SelfItem.AmmoType = AmmoType;
+	SelfItem.ItemType = ItemType;
+	if (SelfItem.ClipSize != 0) { MaxAmmoPerClip = SelfItem.ClipSize; }
+	//SelfItem.HitDamage = HitDamage;
+	//if (Projectile)
+	//{
+	//	SelfItem.HitDamage = Cast<AProjectile>(Projectile)->GetHitDamage(); // Projectile->HitDamage() doesn't work? tsubclasspointer needs a cast?
+	//}
+}
+
+
 float AProjectileWeapon::GetCurrentSpread() const
 {
 	//float FinalSpread = InstantConfig.WeaponSpread + CurrentFiringSpread;

@@ -6,15 +6,14 @@
 #include "Components/InventoryComponent.h"
 #include "Characters/BaseTrainer.h"
 // Lays out and controls the Main Menu UI for our tutorial.
-class SPACESHOOTER_API SInventoryWidget : public SCompoundWidget
+class SPACESHOOTER_API STradeWidget : public SCompoundWidget
 {
  
 public:
-	SLATE_BEGIN_ARGS(SInventoryWidget)
+	SLATE_BEGIN_ARGS(STradeWidget)
 	{}
 	SLATE_ARGUMENT(AActor* , InventoryOwner)
-	//SLATE_ARGUMENT(TArray<FItem>, Inventory)
-	//SLATE_ARGUMENT(AActor* , Owner)
+	SLATE_ARGUMENT(AActor*, Trader)
 	SLATE_END_ARGS()
  
     void Construct(const FArguments& args);
@@ -23,9 +22,21 @@ public:
 	//INventory
 	//-----------------------------------------------------
 	AActor* InventoryOwner;
+	AActor* Trader;
+	TSharedPtr<class SInventoryWidget> PlayerWidget;
+	TSharedPtr<class SInventoryWidget> TraderWidget;
+	UInventoryComponent* PlayerInventory;
+	UInventoryComponent* TraderInventory;
+	
+	TSharedPtr<class SWidgetSwitcher> WidgetSwitcher;
+
+	bool bTradeMoney;
+	void GiveItem(FItem item);
+	void TakeItem(FItem item);
+	
+	/*
 	TArray<FItem> Inventory;
 	TSharedPtr<class SScrollBox> InventoryBox;
-	void UseItem(FItem item);
 	UInventoryComponent* inv;
 
 	TAttribute<FText> WindowTitle;
@@ -59,16 +70,15 @@ public:
 	//TWeakObjectPtr<class ASpaceHUD> SpaceHUD;
 
 	//TSharedPtr<SVerticalBox> VBox;
+	*/
 	FReply ToggleMenuClicked(); //OnExecute function
- 
+	void ToggleChildren();
 
 
 	//-----------------------------------------------------
 	//DELAGATES
 	//-----------------------------------------------------
-	DECLARE_DELEGATE_OneParam(FTradeItem, FItem);
-	FTradeItem TradeItem;
-
+	
 	
 	//OnToggleMenu.ExecuteIfBound() this should toggle parents function of hiding this (inventory)
 	DECLARE_DELEGATE(FOnToggleMenu);
@@ -86,12 +96,11 @@ public:
 	
 	const struct FGlobalStyle* MenuStyle;
 
+	
 	void RebuildList();
+	void BuildAndShowMenu();
 	
 
-	void BuildAndShowMenu();
-	void HideMenu();
-	
 	
     
 

@@ -42,7 +42,8 @@ public:
 	void RemoveItemFromInventory(FItem item);
 	int HasItemAlready(FItem item);
 	int GetGold();
-
+	void AddGold(int gold);
+	int UseGold(int gold);
 private:
 	TArray<FItem> ItemInventory;
 	float Gold;

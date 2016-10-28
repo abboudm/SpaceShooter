@@ -86,6 +86,29 @@ int UInventoryComponent::HasItemAlready(FItem item)
 }
 
 
+void UInventoryComponent::AddGold(int gold)
+{
+	Gold += gold;
+
+}
+int UInventoryComponent::UseGold(int gold)
+{
+
+	if (gold > Gold)
+	{
+		int temp = Gold;
+		Gold = 0;
+		return temp;
+	}
+	else
+	{
+		Gold -= gold;
+		return gold;
+	}
+	return 0;
+}
+
+
 int UInventoryComponent::GetGold()
 {
 	return Gold;
@@ -102,7 +125,8 @@ void UInventoryComponent::AddItemToInventory(FItem item)
 	{
 		//Catch loot named Gold, and add to the gold ammount!
 		//Just for fun, set Value of Gold to BLANK, then set the gold item to quantity * x !
-		Gold += item.Quantity * item.Value;
+		Gold += item.Value;
+		//Gold += item.Quantity * item.Value;
 		return;
 	}
 
@@ -215,8 +239,9 @@ void UInventoryComponent::RemoveItemFromInventory(int index)
 {
 	ItemInventory.RemoveAt(index);	
 }
-/*
-*/
+
+
+/**/
 
 
 AInstantHitWeapon* UInventoryComponent::CreateInstantHitWeaponFromItem(FItem weaponitem)

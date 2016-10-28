@@ -2,6 +2,7 @@
 
 #include "SpaceShooter.h"
 #include "UI/IngameMenu.h"
+#include "UI/TradeMenu.h"
 #include "Characters/PlayerCharacterController.h"
 #include "Characters/Trainer.h"
 #include "UI/SpaceHUD.h"
@@ -37,6 +38,7 @@ void APlayerCharacterController::BeginPlay()
 
 	//Build menu only after game is initialized
 	IngameMenu = MakeShareable(new FIngameMenu());
+	TradeMenu = MakeShareable(new FTradeMenu());
 	//IngameMenu->Construct();
 	//IngameMenu->Construct(Cast<ULocalPlayer>(Player));
 	/*
@@ -44,6 +46,17 @@ void APlayerCharacterController::BeginPlay()
 	
 	IngameMenu->Construct(this);
 
+
+}
+
+
+void APlayerCharacterController::ConstructAndShowTradeMenu(AActor* other)
+{
+	if (TradeMenu.IsValid())
+	{
+		TradeMenu->Construct(this, other);
+		TradeMenu->ToggleGameMenu();
+	}
 }
 
 void APlayerCharacterController::OnToggleInGameMenu()

@@ -1,0 +1,509 @@
+-------------------------------------------------------------------------------------------------------------------------------------
+README!README!README!README!README!README!README!README!README!README!README!README!README!README!README!README!README!README!README!
+-------------------------------------------------------------------------------------------------------------------------------------
+Reading this document:
+	- These are a collection of......
+	 
+		*Game Context / Backstory*
+		*Game Story / Main Game*
+		*Tutorial World, Intro Game*
+		*etc sections, you'll see the titles*
+		
+	....I want in the final game. For the most part, this whole document is up for debate; nothings set in stone.
+		A lot of these are factors i've been writing down while playing random games like
+				(DarkSouls),(Halo/COD/Battlefield/FarCry),(Witcher/Skyrim/Fallout),(Zelda/Mario/Various Gamecube/games from our childhood), (KOTOR/Pokemon/FinalFantasy Games)
+		
+		That being said, certain sections are more final than others.
+		Actually think of it like drying cement, lets make changes now, but we should deciede quickly since they should be core ideas that dont change.
+		
+		Spcifically, The Game Back Story && Tutorial World (These are the two things, in this document, that are first in reach of actually representing in code)
+	
+	
+		On a related notion: There are 2 reasons why a musician would be inspired to write music. 
+		One reason is they heard such terrible music and went, "this is what people like? I can do better!"
+		The other reason is they heard such great music and went, "This is AMAZING, I want to make something that instills this feeling in others!"
+		
+		Furthermore, just like matter, you cant just "create" a story or song from scratch. 
+		Its usually created in bits taken from a big melting pot of all the influences one is influenced by. (Have you ever heard the phrase, "Its like the story wrote itself, i didn't even have to think about it!"
+
+		So under that context, this document is going to serve as a sort of "blueprint" for the final game. 
+		But we dont need to reinvent the wheel, where its already been done, so lots of other games/examples are going to be referenced.
+	
+	- [120] BRACKETS:these are placeholders, like the first GameFactor is my idea for [120] collectibles. But that number is just a placeholder, im not saying 120 is a good number, but gives a sense of how many i mean
+
+	- when you see the word Pokemon, I meean the bio/digital/monster/creature/thingys that this game would be about, not actual pokemon. When we come up with a name for em, a find/replace will fix this
+		-but then again, i use the word pokemon when im talking about the game, hopefully it'll be clear enough, but technically,just check capitalization
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+												Game Context / Backstory
+-------------------------------------------------------------------------------------------------------------------------------------
+Human kind began exploring space. They Settled and created communites on planets across the galaxy.
+
+A government was created to encompass all of the new colonies, called the United Nations Space Colonies (UNSC) with the home base on Earth.
+
+Eventually, many colonies rebelled, and a civil war began. 
+
+After a few years of civil war, the UNSC deciede to create Bio Weapons to crush the rebellion. They persue this ideas through a couple areas of research:
+	*One area is bio mutation. The idea is that a scout ship would travel to an enemy planet. 
+	It would blanket the planet with virus, that attacks the animals of that planet, and mutates them into monsters.
+	The monsters would rampage and attack all the rebels (and civilians :( ) 
+	Then after the planet was "empty" a Rehabilitaion Squad would occupy the planet.
+		-This would be a group of Soldiers, who hunted and catalogued all the rampant monsters.
+		-Scientists who would take the data the soldiers catalogue, and do further bio research.
+		-Various Poloticians and settlers to rebuild the planet in the name of UNSC
+	
+	*Another area is the idea of digitizing matter. The chonological breakthroughs would be:
+		-scientists are able to store inanimate objects, like apples or rocks, in digital storage
+			this would work like a 3d printer, you put matter in, it disapears and is stored in HDD, then the process is reversed and it reassembles the matter
+		-scientists create a Analog2Digital Converter and a Digital 2 Analog Converter ( ADC and DAC) these eleminate the need for a "box" and instead "scan" matter
+			these ADC and DAC would have their own ram storage, so they could only store up to [10kilos] of matter.
+			but then there would still be an HDD to store items for long term - you would keep your guns in ram (weapon wheel) but youd store your clothes in HDD (inventory)	
+		-scientists create a way to digitize sentient matter. the problem the find is with the soul. 
+			they find that they technically "kill" whatever they digitize, but the tradeoff is they can recreate copies!
+			these copies when killed, would return to the RAM storage in the DAC/ADC 
+			this way, you couldn't make 50 copies of a charizard you caught...unless you had the ram storage to acommadate 50 copies!
+			this also brings the limit like, only having 6 pokemon on you. youd have to store some pokemon in long term hdd, but 3 could be on call for instant digitizing/matterizing
+			finally, because of these killing/soul deals it is made illegal to use this on humans...but that wouldn't stop mafias and other corrupt/evil organizations....
+		-finally, with the help of catalogue virus/mutations of the bio-mon, these scientists are able to modify the dna of monsters and essentially "create their own monsters"
+	
+	Finally, with all of the methods of Bio Monsters, scientists are able to modify/create some Super Bio Weapon DNA, (which essentially is mewtwo) 
+			These [9] Super Bio Weapons are ultimately powerful, and they obliterate any rebel factions.  
+
+Anyway, it works, the Pokemon/UNSC win and the war ends. 
+But some of the Super pokemon gain higher sentient functions (smart) and begin to rebel against their creators!
+Most of the pokemon are persuaded by the Supers, and they join up with the surviving rebels, and start a new civil war.
+
+With Monsters of Legendary Strength leading the war (Mewtwo/Charizard) rebels and monsters defeat the UNSC.
+
+They take out all of the UNSC leaders, and anarchy ensues across the galaxy.
+
+Time goes on....
+
+The Super Pokemons' idea of a "Better World" wasn't actually "Better" but many people/pokemon prospered.
+
+Various Communites rise from the ash of the old UNSC
+
+Some Communites are of old/Traditional ones - specifically new capitol cities rebuild on old captials of the UNSC.
+
+Other commmunites are new and undefined...
+
+And some people who, who find themselves in worlds with few others, learn to make their own path in life....
+
+
+*Game Starts*
+-------------------------------------------------------------------------------------------------------------------------------------
+													Game Start/Game Story
+-------------------------------------------------------------------------------------------------------------------------------------
+Game Starts with you living in a rural world with a sibling (think out in the country)
+
+****this is adapted from Full Metal Alchemists' story/intro****
+
+two orphaned brother/siblings
+they lived on a samll village world, one of the few untouched by the war (the planet being on the edge of the known galaxy)
+Their father was a scientist, who helped develop the key technology in digitizing matter (he didn't necissarily help with the monster parts)
+Their mother was born on this rural world, and when they got married, it was like the father was "leaving the war life behind"(the pokemon/military/science world the game is set in)
+Basically, they lived in a place, untouched by war, so the main character/sibling grew up in a peaceful place, unaware of all the civil war/pokemon etc
+At a very young age for the siblings, their father left for an unknwon reason
+	(though it is later in the game revealed that the father learned of what the miliatary/orginazation did with his reasearch 
+		- e.g. the cruel treatment of pokemon, and he needed to save the world. 
+		but his travels met with misfortune and he was gone longer than he intended...)
+
+The siblings, after their father leaves, take an interest in his work, and learn all they can of the science/methods of digitizing matter / pokemon
+
+Eventually the mother caught an illness and died, leaving the siblings on their own (maybe age 17/18? old enough to be adults but still, kids)
+
+Now, because they have nothing left on this homeworld, they deciede to travel the galaxy and adventure(or whatever)
+They have many motives, like wanting to help the world with their knowledge theyve gained from reasearch?. Wanting to explore the galaxy in search of pokemon/etc, wanting to find what happened to their long lost father
+
+In the end, the decide to make their first stop at an old friend of their dads (whos letters they read while researching digitzing/pokemon)
+They figure, they have lots of theories theyve learned, but they need to gain real experiences
+They travel to the planet hes located on and find hes kinda like a secluded hermit
+
+****end the full metal adaptation, and start the (luke/obi won, frodo/gandalf) setting****
+
+Gandalf guy
+tell you about the world of pokemon. he tells you about how some are neutral, some are nice, and some are evil. but ultimately these were all created by man, so its not like they had a choice to be evil
+Gandalf says, 
+	"In ancient times, man thought that it would be technology that destroys humans. They thought some sorta A.I. would skynet kill them all,
+	but that idea is retarded, cause as you well know, robots dont have free will. What man didn't realize is that they themselves couldn't create something that was better than themselves. 
+	They could though influence something greater than themselves (nature) that would then turn against man. This is the Pokemon."
+	
+
+Gandalf, by explaining all this, explains the idea of Pokemon either being killed/exterminated OR saved/befriended. It sets up the whooole aspect of the game which is a dark/realistic world of pokemon.
+It would also set up the idea of karma, and your character either striving for the dark side, or the light side. each mission would give you karma points that sent it positive (light) or negative (dark)
+so like for example a mission could be you see a person in distress from a wild pokemon. You have two optinos, kill the pokemon, or let the distressed continue to be attacked. If you kill the pokemon, yay you saved the princess. But wait, the pokemon was actually angered because the princess was actually the ceo of an oil company destroying the enviornment. But wait, the ceo of the oil company was actually just trying to scout out an area to safely drill for oil, and this rampant pokemon started attacking him. its basically, gonna be a huge factor on quests/endgames where you choose your "path in life" its hard to explain over text, so mention this to me if it doesn't make sense. also see the MISSIONS section where i describe some formats for missions/quests
+
+
+**Dont think i mentioned yet, so gandalf has pokemon, he'll give you some and the other starter items, but says you must face a "Soldiers Trial" or some junk, basically throwing you into tutorial world***
+
+******ACTUAL, running around and shooting GAMEPLAY Starts See TUTORIAL WORLD section*********
+
+after the tutorial world, you and your sibling deciede to part ways
+you both think you want to make your own way in the world.
+
+
+*******ACTTUAL REAL,FOR REAL THIS TIME, MidGame,Questing Is Here See MISSIONS section ************
+
+
+you eventually meet up with some sidekicks/followers, these guys would essentially hang out in your space ship and offer you services like
+	-upgrading items
+	-being a merchant and trading for items
+	-navigations/pilot who actually runs the ship/pilots it
+	**i think these guys would never follow you/help you explore, those would be extra ppl you meet, like skyrim followers**
+
+This then sets up the rival function, like how gary acted in pokemon
+throughout the game you'll finish quests/missions and start painting a picture of who your character is (dark/light,evil/good,nice/mean,etc/etc)
+then when you meet your sibling/rival at those cutscene moments, you find they made all the opposite choices
+so in that mission where you killed the evil dog pokemon, you found that your rival befriended some other evil dog pokemon and now its his bestfriend or something
+this idea would be setting up the end game
+
+the end game would have [3] endings
+
+-Good Ending : you saved all the pokemon! your a nice person and everyone and everypokemon loves you. Your sibling tho is evil, he turned to the dark side and hates pokemon, killing and enlsaving them. you must stop him?!?
+-Evil Ending : you kill efficiently and want to exterminate the cancer the UNSC created called pokemon. its terrible, and you find that the world gets a little healthier when there are no more pokemon. but your sibling loves them and cares for them! you'll have to deal with him somehow
+-Neutral Ending: idk some mix of the two above
+
+-Eastar Egg Good endings: for good, after the sibling faceoff, you go home and create the natianl pokemon legue where you have a son, named Ash, who promotes this league of friendship and battling safely(without guns)
+-Easter Egg bad endings: after the sibling faceoff, you go home, and create Team Rocket. with your influence and power, you create a galactic emprie, and after many long years of running it, deciede to pass off the company to your son, Giovanni
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+													Tutorial World
+-------------------------------------------------------------------------------------------------------------------------------------
+For the sake of development/writing the actual game, this is what our first checkpoint is in making a game: getting these rooms setup
+this would be a series of rooms (think portal) that you have to do certain taks/missions that teach you how to play the game
+(but again, for development sake, in the final game this could be a series of caves, or temples, or some other cool place)
+a basic outline ive though of is thus:
+
+Each room, picture it as a blank, white cube room like portal
+
+
+Room 1:
+	A sign in the middle, when you read it it says "go through the door"
+	It starts up a quest "Go thru the door"
+	It finishes the quest when you go thru the door
+	going thru the door, loads/streams Room 2:
+Room 2:
+	Gun in the middle of the room, read a sign and it says to pick it up and shoot the designated objects
+	when objects are destroyed, room 3 opens up
+	also, this would introduce the concept of buttons
+		press the button, make the targets appear and start the timer to shoot them
+Room 3:
+	Room 3 is a big parkour challenge. Did you ever play any of the "ninja maps" on halo? u know, the parkour maps! well that is a huge element i want to incoperate
+	basically, all the temples/challenge rooms of the game would be like a big parkour puzzle you have to jump around and solve
+	for now, in room 3, its just a simple climb up this ledge, jump across this gap, slide/crouch under this wall, and make it to the goal
+	door 4 opens when you get to the goal
+Room 4:
+	this is a mix of stuff like targets you have to shoot, climb structures to get to the goal, and its timed or something
+	this would have extra enviornment elemtns like
+		glass windows you can walk through, maybe your in a square room with a window, and the only way to proceed is break the window and jump thru the hole
+		door blocked by wood planks, you have to shoot/break up to pass thru
+		rubble/cracked wall you have to shoot with an explosive to blow up and get through
+		etc barriers that you have to figure out how to "open"
+	anyway, goal gets room 5:
+Room 5:
+	An Npc that you talk to, he asks if you want to mock battle, and so this has AI for basic enemy shooting you/taking cover/etcetcetc enemy ai
+Room 6:
+	this has a wild pokemon, so wild pokemon ai! lots lots lots of stuff for room 5/6 like sneaking, enemy/allies, combat,pickpocketing, being spotted,etcetcetcetc
+Room 7:
+	this is the same as room 6, but the objective is to capture your first pokemon! you would then need to use your pokemon to figure our a Room4 type puzzle
+		maybe, you need to jump around a corner, and your pokemon, who can fly, can give you a psudo xray vision so you can see around the corner! idk
+		or simply, you got a charmander, and thers an ice wall infront of you...flamethrower!
+Room 8:
+	now with your new pokemon, you have to battle a wild pokemon. this introduces the idea that some pokemon are harder to kill/subdue
+		so you have a battle rifle
+		   you have a squirtle
+		   
+		your battling a charizard
+		
+		if you shoot the charizard, he has bullet proof skin, except hes weak in the belly
+		but like hell hes gonna show you his belly!
+		so you send squirtle to attack/distract/all the commands we can give squirtle
+		during this you get your shot/chance and shoot it!
+		of course, some pokem, you can just aim really good and shoot through their defences
+		
+		other pokemon, say mewtwo, has a psychic barrier. he deflects all bullets
+		but he doesnt deflect low-speed objects, so you getyour squirtle to headbutt mewtwo
+		mewtwos now dizzy, and forgets to block bullets, so you go for the headshot
+		
+		just ideas, lots of interactions to create/plan for
+		
+room 9:
+	finally, you fight a enemy soldier who has his own pokemon friend
+	Actually, "tutorial world" ended with room 8. gandalf gave you your pokemon, and you and your sibling decide to go your seperate ways.
+	you travel to your first temple/area of interest and you run into a soldier/trainer who has guns and his own pokemon!
+	This introduces....
+	Enemy Trainer Battles are to the death!
+	At the end of the tutorial, after getting your first pokemon and killing a few holograms.
+		you run into a fellow soldier with his pokemon. 
+		He Notices your a rookie/green and wants to help show you the ropes.
+		He mentions that people/soldiers and pokemon like to compete with each other and like to battle.
+		In this battle, he explains, the trainers stand on the sidelines, and call out orders to their pokemon. 
+		The winner is whoevers pokemon can "feint" the other pokmeon
+		so you agree and have an honest to god, pokemon battle.
+		During this fight, the Other soldier is trying to get out of your view,
+		like hes slowly inching off screen
+		hes trying to distract you/get our of your sight. When he does, he attempts to assassinate you with a knife in the back!!
+		[srsly, your character would actually die, if you didn't block him/dodge, then it would reload to the start of the battle again]
+			Welcome To SpaceShooter Battles, its both pokemon and trainrs trying to kill the other pokmeon/trainers!
+
+-------------------------------------------------------------------------------------------------------------------------------------
+													Game Missions
+-------------------------------------------------------------------------------------------------------------------------------------
+		All mission types have good/bad version, and anywhere in between, in relation to karma points
+		
+		***Exterminator Mission
+			-Maybe theres a hospital being overrun by some bug pokemon, you gotta go in and squish em
+					-if you accept, you save the hospital, but the pokemon in the area attack you because your mean and killed their bros
+					-if you deny, some patients die, but you gain the aid of the pokemon in the area, or somehting
+			-Maybe theres a patch of forest where some ceo wants to build a resort
+					-if you kill all the pokemon, construction wont be hindered and you get a huge payoff in credits, as well as free passes to the casino/hotel/whatever was built
+					-if you hinder construction instead, you gain pokmeon appreciation, but no money and no fun minigames or idk
+		
+		***Egg hatching
+			-maybe theres some bird pokemon whos egg got stolen, and your trying to bring it back to them before it hatches
+			-maybe theres some evil scientist who made a brand new ultra pokemon, and if he releases it, it'll be super bad (haha idk)
+		
+		**KingPin TakeDowns - kill specified actor
+			-These might be story missions where the [9] legendary pokemon leaders in the civil war are hiding out on different planets
+				its your job to go to these plantes and "deal" with them. this would be where your rival interacts and he chooses opposite of you
+			-also could be small fries, both human and pokemon, who were high rankers in the civil war. maybe one was a nazi pokemon, and some were doctors with no boarders
+				*so with the side-quest kingpins, depending on your karma meter, the mission could say "kill the president" or "protect the president"
+
+		**Help Distressed person
+			Town is under attack from bad pokemon
+				-maybe the town is evil and burned the forests
+				-maybe the pokemon are evil and just want to shed blood
+				-maybe its whatever and you just ignore em
+				
+		**burning building/bomb countdown/other timed events
+			same thing as distressed but with a clock/countdown
+			
+		**collect item/artifact
+			-treasure hunts, these might be in rando locations
+			-more serious items/artifacts would be in parkour temples (zelda puzzles, but with halo parkour to traverse them)
+			
+		**telephone game with npcs
+			- talk to this person, who tells you to find this person, who says this guys is in this place, who might know who stole your gun, who said he sold it to .....
+			- this could be a "container mission" for other missions mentioned
+		
+-------------------------------------------------------------------------------------------------------------------------------------
+													Game Worlds
+-------------------------------------------------------------------------------------------------------------------------------------
+	These are the worlds and enviornments the player would be able to experience (not nesissarily be forced to experience)
+	
+	***Pokemon only/wild planets****
+	***people only planets (maybe a desert like planet, or a big shopping mall asteroid/moon)*****
+	***traditional planets with pokemon integrated into them****
+	***tryant/corrupt governement planets****
+		-village run by false prohet
+		-mafia really runnning town, not govt
+		-etc town vs group in power
+	
+	***Some crime/etc police after the character, whether it was from a miscomunication, or the player actually committed crime***
+	
+	***assassins organization***
+		-this idea i think is kinda cool, so itd be like the dark brotherhood from skyrim, but instead of it being a guild of assassins, its like they work on a huge private twitter. its secret, and you can only access it via word of mouth. basically there are two types of users. a rich powerful guy,tweets a hit, like kill this guy. then the assassin/bounty hunter goes out and tries to get the kill first. then the guy to first prove he got the kill gets the bounty. But the point is its all done on a secret "need to know someone" twitter, AKA only the Elite and Very Rich are accepted, haha
+
+	***space mafia***
+		-controls spaceport and trade
+		-would have some "forced laborers/slave" program dealing with some zombie people who got digitized, missions could involve you stopping/helping these guys' markets
+
+	***Space Military***
+		-various groups of forces on different planets
+			-like one planet might have a bunch of mercenary groups fighting over power
+			-another might have a central police force that protects its citizens
+			-others might have a HUGE space navy that tries to govern multiple planets
+			
+	***Colleges***
+		-various colleges the payer could visit and take missions from
+			-like maybe you get inventory upgrades from here by talking to digitizer scientists and getting some upgrade items that are in development
+		***Space artifacts***
+		-see collectibles in GameFactors, but these could be college specific
+-------------------------------------------------------------------------------------------------------------------------------------
+													Game Factors
+-------------------------------------------------------------------------------------------------------------------------------------
+from here on out, you can safely ignore/procrastinate on reading. 
+these arent too important on solidifying, and have almost no importance in early development decisions, its just a note pad for ideas
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------
+Collectibles
+	Dolls/Some Collectible like object
+		[120] in all, in various, easy to reach places. maybe a few are hidden good, but this should be a low hanging fruit for
+				-"being a completionist" and exploring the world thru the motive of finding "all the collectibles" (or w/e)
+	Skulls - Halo 2 Style
+		[10] these would be in very,very,[3 of them being in VERY VERY VERY VERY VERY VERY VERY] hard to reach places. 
+			Maybe one is up a really hard parkour course, and another is actually outside the map, 
+			so you'd have to glitch out the map to find it! again, halo 2 style, these would be very secret
+			
+			
+	Various Artifacts - deadric quests in skyrim
+		[12] these would be collectibles that are quest related, like maybe some ancient powerful technology from some mysterious forerunners or demons, idk
+				these would probably be like [Key Item / Upgrade] Items where they boost your [Attribute] or else is a super awesome gun/sword
+
+
+--------------------------------------
+Walking/Sprinting
+	Would be able to walk/run/sprint anywhere you want.
+	Except, in NPC's houses/Hallowed Ground (like for cutscenes/etc)
+	The point is that there wouldnt be stupid parts in the game world you can't "jump up that roof" for no reason (think invisible barriers)
+	if that still doesn't make sense, its like i want to be able to run around like halo the whole time, but when your in someones house: if your analog stick, is down the whole way, you won't run at "outdoor" speed
+
+
+----------------------------------------------------------------------------
+No Customization of character, until a way bit into the game
+	This is under the idea of, when making a new game in skyrim/fallout - you have to spend forever making your face look just right.
+	I mean, you haven't even done anything yet in the game! 
+	How do you know who "you are". (yeah, i guess fallout you wait until after the tutorial level/you leave the vault, but still you haven't "played" the game yet! So your character doesn't have any "character" yet
+	
+	So the idea is that, this is gonna be a halo/space shooter. So the main character would be in a space suit / first person mode (most of) the whole time
+	
+	there would never be any mention to the player's gender apperacne or anything like that
+	
+	then, your doing a quest like, [20hrs] into the game, and the quest giver says something like,
+		"Hey wait! You can't go to a party lookin like that! Get something better!"
+			This would then prompt the character customization deal  
+
+----------------------------------------------------------------------------
+Upgrading Items takes Real Time
+
+	Picture skyrim mining ore
+		you click a, and let the guy pick at the ore until its depleted
+		
+		So using that mechanic, a way to make Upgrade Items would be to sit at a work bench and watch your character solder/hammer somehting
+		And lets say the upgrade item has an Effeciency Attribute
+		[	Ex: 
+				Shield Recharge Rate Upgrade [ *1.1  ---- * 10 ] 
+				it might take 30 seconds to get the 1.1, but 2 hours to get the full 10!
+		]		
+----------------------------------------------------------------------------
+Good Items can be purchased
+Unique Items are found
+Best items are upgraded from random drops
+----------------------------------------------------------------------------
+Anyone can die 
+so if a you kill a storyline character, too bad you ruined your game. The idea is that every choice you make has consequnces. 
+					But, that phrase is almost a cliche now in videogames, yet...i fucking hate how games still, 
+							in the end, force you to follow certain parameters, like invisible walls. 
+							id rather have unique landscaping blocking you from leaving an area. But in addition, the player could be encouraged to "break out" of the level (think halo 2 getting out of maps) and while doing this has no value to finish missions (because static, not good looking geometry is literally blocking you from clipping back into the noral play area), you could find some secret collectibles / easter egg areas this way! See GAMEFACTORS
+		
+Anyway....
+The idea is to make the game more real / immersive. Like if wild pokemon are attacking a town, and while your saving it someone gets killed, you better:
+	-reload the last save to try again
+	-pray to god that it wasn't someone important for quests
+	-fuck it cause i know for a fact they weren't important quests ANd they werent a merchant because i read the wiki page on this whole game
+----------------------------------------------------------------------------
+Missions can be halted mid mission if you take to long to do something.
+So lets say you want to meet billy at midnight. in skyrim/witcher its whenever your at that location at midnight.
+But what if the guy your meeting gets tired of waiting 3 days. 
+The mission would go into standbye mode, where youd have to track down billy and convince him to restart the mission
+
+----------------------------------------------------------------------------
+Due to the evolution of these bio weapons integrating with nature...
+	there are going to planets with mutants!
+	
+	Maybe theres one planet where it was filled with barbarians. WHen pokemon came around, they spread a virus that mutated these guys into smart soldiers
+	.....who transform into giant monkeys when they see a full moon! Furthermore, theres a group of these guys that go around to planets, deploy a "fake full moon generater" and destroy planets after transforming! 
+			(this is specifically from dbz)
+	Maybe theres a planet that was mildly affected...like people turning into mere-people (gain gills/flippers, whole nine yards)(think atlantis)
+		this would create the enviornment for underwater worlds/levels where the player needs a rebreather or other item equipment to explore
+----------------------------------------------------------------------------
+Certain Missions have multiple cutscenes
+[	Ex. 
+		1.you lead your followers/quest giver down a corridor, you spring a trap, but you dodge it, everyone safe
+		2. your follower/quest giver is leading you down the corridor, doesn't see the trap, dies, and quest fails[or at least objectives change]
+]
+
+----------------------------------------------------------------------------
+Very Diverse Set of NPCs
+
+	Like a lot of different personalities.
+	But even more than that, like walking into different npcs houses/worlds/cities could be like flipping channels on tv, 
+	like its a whole enviornment/culture/people that you get to tour around and watch
+----------------------------------------------------------------------------
+Digital Alchemy / Item Lore
+	So referenceing the two ways to digitize matter
+		-theres the box you put somehting in and it digitizes it
+		-DAC/ADC system that scans stuff based on its internal ram
+	So your inventory is basically a harddrive that you attach the ADC/DAC to, you can only pick up an item thats "so big" (so cant store a car, but def a gun)
+		-furthermore, you couldn't use more than [3] guns at a time, without switching them out of long term storage (aka equip menu has [3] weapon slots, you equip them, then in game you can only switch between those [3] guns)
+	Then, at shops or places of interest, there would be digital alchemy stations
+	
+	The idea is that you could collect a bunch of iron ore
+	then come back to central hub, dump all the iron ore you can into a digital alchemy box, and then it makes a bunch of bullets for you!
+	thered be things like how big the box is, so how big the item (a small one gives ammo, a cabinet one gives rocket launchers)
+	
+	basically, this is the crafting system
+	
+	ohh, yeah, and youd have to purchase "schematics" of items, before you could craft them (or find them in dungeons)
+----------------------------------------------------------------------------
+Skateboard Special Item! && Online Multiplyaer
+
+so first off, co-op is an idea i want to use, but that would be way later in terms of dev (cause of networking i think! idk havn't looked into it, just know its 'extra' work)
+
+but then there would also be multiplayer
+
+my idea, in conjunction with the customizing your character late idea, is to have a big "mall" on some planet
+
+in there you'd go customize your player/buy armor clothes/etcetc
+then thered be an arcade, which would act like the "Matrix"/virtual reality, you plug yourself in and its a video game
+so multiplayer could be this implementation, and you could load
+	-halo styled game, basic fps team/freefor all/w/e
+	-races/parkour challenges
+	-tony hawk high score!
+	
+So a cool side item i thought would be a skateboard
+you could equip it in certain areas, and when riding, you coudln't shoot/pokemon at all
+it'd be 3rd person tony hawk experience!
+
+so one of the shops could be a general item store, and one of the items is a skateboard, where he also sells decks/wheels the like!
+
+
+So the idea is to have lots of vehicles to use, like halo/gta
+they would all be on the more rare side maybe, like you could only find cars in cities, and dirtbikes in rural worlds
+but wherever the main hub locations are, you could whip out your skateboard to travel fast, and do kickflips/grinds on the way!
+
+furthermore, i had some lore on why a skateboard would still exist in this future/space world, which is basically:
+	hover tech eliminated the need for wheels, but one extreme sport survived because it could do one thing hover boards couldn't: flip
+			(cause if it flipped, it would repel your feet and fall to the ground!)
+----------------------------------------------------------------------------
+Pokemon weak spots
+
+	To deal with combat of Pokemon and guns, there would be multiple ways pokemon could block/defend bullets.
+	
+	Maybe Psychich pokemon are weak to head shots cause it "rattles their brain" 
+		-mewtwo creates a psychich barrier, bullets have noeffect. But head shots rattles him, and if you get enough, the psychic barrier weakens/breaks
+	Charizards/dragons have weak bellys - classic;	
+	
+----------------------------------------------------------------------------
+Wild Pokemon Die, Captured Pokemon Digitize
+	
+	Basic pokemon game, where if captured and they were ko'd, they just faint, not die
+	But the immortality of captured pokemon is due to the digitization of their cells,
+	so wild pokemon that haven't been capture actually die.
+	
+	further more, if captured pokemon is ko'd, they return to capture capsule with a "red hue" (like in pokemon anime)
+	if the pokemon is merely recalled, they return with a "blue hue"
+	if its wild, it just rolls over and bleeds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

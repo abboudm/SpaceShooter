@@ -38,4 +38,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<class AProjectile> Projectile;
+public:
+	virtual void UpdateItem(FItem item) override;
+	
 };

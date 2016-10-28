@@ -29,11 +29,25 @@ protected:
 		FCanvasIcon Crosshair[5];
 	UPROPERTY()
 		UTexture2D* HUDMainTexture;
+
+	FColor HUDLight;
+	FColor HUDDark;
+	UPROPERTY()
+		UFont* NormalFont;
+
+
+
+
+
 public:
 
 	/** Main HUD update loop. */
 	virtual void DrawHUD() override;
 	void DrawCrosshair();
+	void DrawActionIcon();
+	const struct FGlobalStyle* MenuStyle;
+
+
 
 
  	//UFUNCTION(BlueprintImplementableEvent, Category = "Menus|Main Menu")

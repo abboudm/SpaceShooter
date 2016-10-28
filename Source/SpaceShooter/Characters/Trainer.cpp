@@ -14,6 +14,7 @@
 #include "Components/InventoryComponent.h"
 #include "ImageUtils.h"
 #include "Items/Weapons/AmmoLoot.h"
+#include "Characters/PlayerCharacterController.h"
 
  
 
@@ -69,16 +70,19 @@ ATrainer::ATrainer(const FObjectInitializer& ObjectInitializer) : Super(ObjectIn
 }
 void ATrainer::NotifyActorEndOverlap(AActor* OtherActor)
 {
+	/*
 	if (Cast<ALootable>(OtherActor) && OverlappedLoot && OverlappedLoot == Cast<ALootable>(OtherActor))
 	{
 		OverlappedLoot = nullptr;
 	}
+	*/
 
 
 }
 void ATrainer::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	
+	/*
 	ALootable* overlappedLoot = Cast<ALootable>(OtherActor);
 	if (overlappedLoot)
 	{
@@ -98,6 +102,7 @@ void ATrainer::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		Lib::Msg("No Overlap of LOOT!");
 	}
+	*/
 	/*
 	{
 		if(ActionButton Down && LineOfSight?)
@@ -146,10 +151,82 @@ void ATrainer::BeginPlay()
 	*/
 	
 }
+
+AActor* ATrainer::GetActorInReach()
+{
+	FHitResult hit;
+	FVector Eyeball = FVector::ZeroVector;
+	float ArmLength = 200;
+	FRotator EyeballRot;
+	//FVector Eyeball = 
+	GetController()->GetPlayerViewPoint(Eyeball, EyeballRot);
+	AActor* out = nullptr;
+
+	FVector CamLoc;
+	FRotator CamRot;
+	GetController()->GetPlayerViewPoint(CamLoc, CamRot);
+
+	FVector AimDir = CamRot.Vector();
+
+
+	Eyeball = Eyeball + AimDir * (FVector::DotProduct((GetActorLocation() - Eyeball), AimDir));
+
+	//Lib::TraceLine(GetWorld(), this, Eyeball, (Eyeball + (AimDir * ArmLength)), hit, EDrawDebugTrace::ForDuration, ECollisionChannel::ECC_GameTraceChannel1);
+	Lib::TraceLine(GetWorld(), this, Eyeball, (Eyeball + (AimDir * ArmLength)), hit, EDrawDebugTrace::None, ECollisionChannel::ECC_GameTraceChannel1);
+	
+	/*
+	*/
+	if (hit.Actor.IsValid())
+	{
+		out = hit.GetActor();
+	}
+	else
+	{
+		//
+	}
+	/*
+	*/
+	return out;
+}
+
 // Called every frame
 void ATrainer::Tick( float DeltaTime )
 {
 	Super::Tick(DeltaTime);
+	AActor* hit = GetActorInReach();
+	if (hit)
+	{
+		ReachableActor = hit;
+		/*
+		ALootable* overlappedLoot = Cast<ALootable>(hit);
+		if (overlappedLoot)
+		{
+			if (bActionButtonDown)
+			{
+				//Lib::Msg("HI");
+				PickupLoot(overlappedLoot);
+			}
+
+			else if (!OverlappedLoot)
+			{
+				//Lib::Msg("Action Button Better be UP god dam");
+				OverlappedLoot = overlappedLoot;
+			}
+		}
+		else
+		{
+			Lib::Msg("No Overlap of LOOT!");
+		}
+		*/
+		/*
+		*/
+	}
+	else
+	{
+		ReachableActor = nullptr;
+	}
+
+	
 	/*
 	if (OverlappedLoot)
 	{
@@ -394,9 +471,44 @@ bool ATrainer::PickupLoot(ALootable* Loot)
 	*/
 
 }
+
+AActor* ATrainer::GetReachable()
+{
+	return ReachableActor;
+}
 void ATrainer::ActionX()
 {
 	bActionButtonDown = true;
+	
+	if (ReachableActor)
+	{
+		ALootable* overlappedLoot = Cast<ALootable>(ReachableActor);
+		if (overlappedLoot)
+		{
+			PickupLoot(overlappedLoot);
+		}
+		else if (Cast<ABaseTrainer>(ReachableActor))
+		{
+			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+		}
+		else
+		{
+			Lib::Msg("No Overlap of LOOT!");
+		}
+	}
+	//else if (ReachableActor->FindComponentByClass<class UInventoryComponent>())
+	/*
+	*/
+	else
+	{
+		if (Equipment->CurrentItem && Cast<AWeapon>(Equipment->CurrentItem))
+		{
+			Cast<AWeapon>(Equipment->CurrentItem)->TriggerReload();
+		}
+	}
+	
+	
+	/*
 	if (OverlappedLoot)
 	{
 
@@ -411,13 +523,9 @@ void ATrainer::ActionX()
 			}
 		
 	}
-	else
-	{
-		if (Equipment->CurrentItem && Cast<AWeapon>(Equipment->CurrentItem))
-		{
-			Cast<AWeapon>(Equipment->CurrentItem)->TriggerReload();
-		}
-	}
+	*/
+	/*
+	*/
 
 }
 	/*

@@ -23,6 +23,9 @@ AInstantHitWeapon::AInstantHitWeapon(const class FObjectInitializer& PCIP) : Sup
 	CurrentSpread = 0;
 	WeaponSpread = 1;
 	ShotTraces = 1;
+
+
+	SelfItem.HitDamage = HitDamage;
 }
 
 float AInstantHitWeapon::GetCurrentSpread() const
@@ -132,6 +135,16 @@ bool AInstantHitWeapon::ShouldDealDamage(AActor* TestActor) const
 	return false;
 }
 
+void AInstantHitWeapon::UpdateItem(FItem item)
+{
+	SelfItem = item;
+	SelfItem.WeaponType = WeaponType;
+	SelfItem.AmmoType = AmmoType;
+	SelfItem.ItemType = ItemType;
+	if (SelfItem.ClipSize != 0) { MaxAmmoPerClip = SelfItem.ClipSize; }
+	SelfItem.HitDamage = HitDamage;
+
+}
 
 
 void AInstantHitWeapon::DealDamage(const FHitResult& Impact, const FVector& ShootDir)

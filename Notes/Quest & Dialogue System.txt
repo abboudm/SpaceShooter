@@ -1,0 +1,33 @@
+So I've been brainstorming how to implement a quest/dialogue system
+i really think we should pretty much copy bethesda in how they do it for the skyrim engine (rando fun fact, fallout 4 is the skyrim engine, just a bit updated! At least, thats what they say on the Fallout mod page)
+
+from what i'm understanding so far from it, is were gonna need scripting in our game
+i looked into a few ways to add scripting and not entirely sure what the best option is
+	Javascript - no idea how javascript works/syntaxs/etc But, theres a project/plugin called UnrealJS - google it, it installs easy but i had no idea how to write/mess with the example JS
+	
+	SkookumScript - google it, again, theres a plugin on the marketplace. this looks suuuper promising, but suuper powerful. like too powerful. i dont think we need a shotgun creating extra overhang for us (i tried it out and it seems cool, but adds a lot of time to the startup process, and adds an extra window for its own IDE)
+	
+	LuaScript - this seems like the best option, its built in to the unreal engine source, we just have to download lua binaries (or python binaries, i think we could load any script language we want) thing here is connecting it to our own unreal engine classes, so like the JS, no idea where/how to start on that - check out (unreal engine program folder, so C/ProgramFiles/EpicGames/Unrealengine)/ Engine/Plugins/ScriptingGenerator/Lua i think, look around in there for it
+	
+Anyway, scripting is gonna be key because my idea (and how bethesda does it) is this kinda workflow:
+		you make an actor to give you a quest
+		you give that actor an id - SSTQ_Barry (Space Shooter Test Quest_Barry)
+		then you make a quest
+		in that quest you set up some dialogue
+		hey would you find me my amulet?
+		no
+			do nothing
+		yes
+			run script
+			
+		the script would be: advanceQuestStage() or something like that, but the point is it would be entered in the editor
+		
+		
+	http://www.creationkit.com/index.php?title=Bethesda_Tutorial_Planning_the_Quest
+	
+	you should check our their quest making tutorial, but while reading, pretend we have the same tools
+	
+	i think once we have an idea for how we want to "create" our quests, well know what classes we need to make, to make that happen
+	
+	anyway, this is hard to explain over text, some of the ideas i have so far haha
+

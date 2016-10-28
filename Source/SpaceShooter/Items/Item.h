@@ -34,11 +34,12 @@ enum class EItemSortType : uint8
 	AmmoType,
 	Clip,
 	Burst,
+	Damage,
 	FullAuto,
 };
 
 UENUM(BlueprintType)
-enum class EInventoryClassType : uint8
+enum class EInventoryCategory : uint8
 {
 	All,
 	Weapons,
@@ -147,6 +148,8 @@ struct FItem
 		float BurstDelay;
 	UPROPERTY(EditDefaultsOnly)
 		float BurstSize;
+	UPROPERTY(EditDefaultsOnly)
+		float HitDamage;
 	//default item struct constructor
 	//methods to create item from an equip or lootable class
 

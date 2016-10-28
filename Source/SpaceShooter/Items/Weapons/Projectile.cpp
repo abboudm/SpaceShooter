@@ -288,3 +288,8 @@ float AProjectile::TakeDamage(float DamageAmount, struct FDamageEvent const & Da
 	return ActualDamage;
 
 }
+
+float AProjectile::GetHitDamage()
+{
+	return HitDamage;
+}

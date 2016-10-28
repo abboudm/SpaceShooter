@@ -125,6 +125,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		float ClientSideHitLeeway;
 	
+
+	virtual void UpdateItem(FItem item) override;
+	
+
+
+
 };
 
 

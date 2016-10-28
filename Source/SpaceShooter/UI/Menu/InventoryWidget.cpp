@@ -5,6 +5,7 @@
 #include "UI/Styles/MenuStyles.h"
 
 #include "UI/Menu/ItemWidget.h"
+#include "UI/Menu/ItemHeaderWidget.h"
 
 #include "Engine.h"
 #include "Characters/BaseTrainer.h"
@@ -17,8 +18,8 @@ void SInventoryWidget::Construct(const FArguments& args)
 {
 	InventoryOwner = args._InventoryOwner;
 	inv = InventoryOwner->FindComponentByClass<class UInventoryComponent>();
-	
-	
+	Category = EInventoryCategory::All;
+	SortType = EItemSortType::Name;
 	
 	//Inventory = args._Inventory;
 	ControllerHideMenuKey = EKeys::Gamepad_Special_Right;
@@ -69,20 +70,26 @@ void SInventoryWidget::Construct(const FArguments& args)
 				+ SHorizontalBox::Slot()
 				[
 					SNew(SButton)
-					.Text(FText::FromString("Name"))
-					.OnClicked(this, &SInventoryWidget::SortNameClicked)
+					.TextStyle(&MenuStyle->HeaderTextStyle)
+					.ButtonStyle(&MenuStyle->TabButtonStyle)
+					.Text(FText::FromString("All"))
+					.OnClicked(this, &SInventoryWidget::ShowAllClicked)
 				]
 				+ SHorizontalBox::Slot()
 				[
 					SNew(SButton)
-					.Text(FText::FromString("Value"))
-					.OnClicked(this, &SInventoryWidget::SortValueClicked)
+					.ButtonStyle(&MenuStyle->TabButtonStyle)
+					.TextStyle(&MenuStyle->HeaderTextStyle)
+					.Text(FText::FromString("Weapons"))
+					.OnClicked(this, &SInventoryWidget::ShowWeaponsClicked)
 				]
 				+ SHorizontalBox::Slot()
 				[
 					SNew(SButton)
-					.Text(FText::FromString("Quantity"))
-					.OnClicked(this, &SInventoryWidget::SortQuantityClicked)
+					.TextStyle(&MenuStyle->HeaderTextStyle)
+					.ButtonStyle(&MenuStyle->TabButtonStyle)
+					.Text(FText::FromString("Loot"))
+					.OnClicked(this, &SInventoryWidget::ShowLootClicked)
 				]
 			]
 			+ SCanvas::Slot()
@@ -169,55 +176,62 @@ FReply SInventoryWidget::ToggleMenuClicked()
 	return FReply::Handled();
 }
 
-FReply SInventoryWidget::SortNameClicked()
+FReply SInventoryWidget::ShowAllClicked()
 {
-	SortType = EItemSortType::Name;
+	Category = EInventoryCategory::All;
 	BuildAndShowMenu();
 	return FReply::Handled();
 }
 
-FReply SInventoryWidget::SortValueClicked()
+FReply SInventoryWidget::ShowWeaponsClicked()
 {
-	SortType = EItemSortType::Value;
+	Category = EInventoryCategory::Weapons;
 	BuildAndShowMenu();
 	return FReply::Handled();
 }
-FReply SInventoryWidget::SortQuantityClicked()
+FReply SInventoryWidget::ShowLootClicked()
 {
-	SortType = EItemSortType::Quantity;
+	Category = EInventoryCategory::Loot;
 	BuildAndShowMenu();
 	return FReply::Handled();
 }
  
 void SInventoryWidget::UseItem(FItem item)
 {
-	ABaseTrainer* pt = Cast<ABaseTrainer>(InventoryOwner);
-
-	if (pt)
+	if (TradeItem.IsBound())
 	{
-		switch (item.ItemType)
-		{
+		TradeItem.Execute(item);
+	}
+	else
+	{
 
-		case EItemType::Equipable:
-			if (pt->hasCurrentItem())
+		ABaseTrainer* pt = Cast<ABaseTrainer>(InventoryOwner);
+
+		if (pt)
+		{
+			switch (item.ItemType)
 			{
-				pt->AddInventory(pt->RemoveCurrentItem());
+
+			case EItemType::Equipable:
+				if (pt->hasCurrentItem())
+				{
+					pt->AddInventory(pt->RemoveCurrentItem());
+				}
+				pt->SetCurrentItem(item);
+				pt->RemoveInventory(item);
+				break;
+			case EItemType::Loot:
+				if (pt->RemoveInventory(item))
+				{
+					pt->DropItem(item);
+				}
+				break;
+			default:
+				GEngine->AddOnScreenDebugMessage(1, 3, FColor::Red, "Trying to use an item that isnt equipable or loot!!!");
+				break;
 			}
-			pt->SetCurrentItem(item);
-			pt->RemoveInventory(item);
-			break;
-		case EItemType::Loot:
-			if (pt->RemoveInventory(item))
-			{
-				pt->DropItem(item);
-			}
-			break;
-		default:
-			GEngine->AddOnScreenDebugMessage(1, 3, FColor::Red, "Trying to use an item that isnt equipable or loot!!!");
-			break;
 		}
 	}
-
 
 
 	BuildAndShowMenu();
@@ -226,7 +240,6 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype)
 {
 	SortInventory(sorttype, false);
 }
-
 void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 {
 	if (Inventory.Num() >= 1)
@@ -250,6 +263,8 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 				return true;
 
 				});
+				SortType = EItemSortType::Name;
+
 
 			break;
 			//---------------------------------------------------------------------------------
@@ -275,6 +290,7 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 
 				return true;
 				});
+			SortType = EItemSortType::Value;
 			break;
 		//---------------------------------------------------------------------------------
 		case EItemSortType::Weight:
@@ -299,7 +315,7 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 				return true;
 
 			});
-
+			SortType = EItemSortType::Weight;
 			break;
 		//---------------------------------------------------------------------------------
 		case EItemSortType::Quantity:
@@ -325,19 +341,151 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 				return true;
 
 			});
-
+			SortType = EItemSortType::Quantity;
 			break;
 		case EItemSortType::ItemType:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.ItemType > r.ItemType)
+				{
+					return false;
+				}
+				if (l.ItemType < r.ItemType)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::ItemType;
 			break;
 		case EItemSortType::LootType:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.LootType > r.LootType)
+				{
+					return false;
+				}
+				if (l.LootType < r.LootType)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::LootType;
 			break;
 		case EItemSortType::EquipType:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.EquipType > r.EquipType)
+				{
+					return false;
+				}
+				if (l.EquipType < r.EquipType)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::EquipType;
 			break;
 		case EItemSortType::WeaponType:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.WeaponType > r.WeaponType)
+				{
+					return false;
+				}
+				if (l.WeaponType < r.WeaponType)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::WeaponType;
 			break;
 		case EItemSortType::AmmoType:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.AmmoType > r.AmmoType)
+				{
+					return false;
+				}
+				if (l.AmmoType < r.AmmoType)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::AmmoType;
 			break;
 		case EItemSortType::Clip:
+			Inventory.Sort([](const FItem& l, const FItem& r)->bool {
+
+				if (l.AmmoInClip < r.AmmoInClip)
+				{
+					return false;
+				}
+				if (l.AmmoInClip > r.AmmoInClip)
+				{
+					return true;
+				}
+				//This catches just in case ItemTypes are the same, it sorts by name!
+				if (l.Name > r.Name)
+				{
+					return false;
+				}
+				if (l.Name < r.Name)
+				{
+					return true;
+				}
+				return true;
+			});
+			SortType = EItemSortType::Damage;
 			break;
 		case EItemSortType::Burst:
 			break;
@@ -349,8 +497,9 @@ void SInventoryWidget::SortInventory(EItemSortType sorttype,bool inverse)
 
 	}
 }
+/**
 
-
+*/
 void SInventoryWidget::BuildAndShowMenu()
 {
 	if (InventoryOwner && InventoryBox.IsValid())
@@ -378,16 +527,61 @@ void SInventoryWidget::BuildAndShowMenu()
 
 
 			InventoryBox->ClearChildren();
+			
+			TSharedPtr<class SItemHeaderWidget> Header;
+			InventoryBox->AddSlot()
+				[
+					SAssignNew(Header, SItemHeaderWidget)
+					.Category(Category)
+				];
+			Header->OnSort.BindSP(this, &SInventoryWidget::SortInventory);
+			Header->OnRebuildParent.BindSP(this, &SInventoryWidget::BuildAndShowMenu);
 			for (int i = 0; i < Inventory.Num(); i++)
 			{
 				TSharedPtr<class SItemWidget> ItemButton;
+				switch (Category)
+				{
+				case EInventoryCategory::All:
+					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "All Category Button Making!");
+					InventoryBox->AddSlot()
+						[
+							SAssignNew(ItemButton, SItemWidget)
+							.Item(Inventory.GetData()[i])
+							.Category(Category)
+						];
+					ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+					break;
+				case EInventoryCategory::Weapons:
+					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Weapons Category Button Making!");
+					if (!(Inventory.GetData()[i].ItemType == EItemType::Loot))
+					{
+						InventoryBox->AddSlot()
+							[
+								SAssignNew(ItemButton, SItemWidget)
+								.Item(Inventory.GetData()[i])
+								.Category(Category)
+							];
+						ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+					}
+					
+					break;
+				case EInventoryCategory::Loot:
+					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Loot Category Button Making!");
+					if (!(Inventory.GetData()[i].ItemType == EItemType::Equipable))
+					{
+						InventoryBox->AddSlot()
+							[
+								SAssignNew(ItemButton, SItemWidget)
+								.Item(Inventory.GetData()[i])
+								.Category(Category)
+							];
+						ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+					}
+					break;
+				default:
+					break;
+				}
 
-				InventoryBox->AddSlot()
-					[
-						SAssignNew(ItemButton, SItemWidget)
-						.Item(Inventory.GetData()[i])
-					];
-				ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
 			}
 		}
 	}

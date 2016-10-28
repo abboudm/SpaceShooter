@@ -35,7 +35,7 @@ public:
 	bool PickupLoot(ALootable* Loot);
 
 	bool InReach(AActor* actor);
-
+	AActor* GetActorInReach();
 	//------------------------------------------------------------------------
 	//Overrides
 	//------------------------------------------------------------------------
@@ -99,7 +99,8 @@ public:
 
 	void CrouchFunk();
 	void UnCrouchFunk();
-	
+	AActor* GetReachable();
+	AActor* ReachableActor;
 private:
 		
 
@@ -110,7 +111,6 @@ private:
 	//------------------------------------------------------------------------
 	//------------------------------------------------------------------------
 
-	
 	ALootable* OverlappedLoot;
 
 	

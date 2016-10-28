@@ -12,7 +12,9 @@ class APlayerCharacterController : public APlayerController
 	GENERATED_UCLASS_BODY()
 
 public:
-	
+
+	void ConstructAndShowTradeMenu(AActor* other);
+
 	void OnToggleInGameMenu();
 	bool IsGameMenuUp();
 	void SetGameMenuUp(bool isup);
@@ -31,6 +33,7 @@ protected:
 private:
 	bool bGameMenuUp;
 	TSharedPtr<class FIngameMenu> IngameMenu;
+	TSharedPtr<class FTradeMenu> TradeMenu;
 
 	/** Handle for efficient management of ClientStartOnlineGame timer */
 	//imerHandle TimerHandle_ClientStartOnlineGame;
