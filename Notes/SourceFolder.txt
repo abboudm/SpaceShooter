@@ -1,0 +1,122 @@
+=================================================================================================================
+			Broad overview of source files already existing now, and also, in the near future 
+=================================================================================================================
+
+=================================================================================================================
+Blueprints
+=================================================================================================================
+
+	For anything in the editor, the only important folders to deal with are
+		Blueprints/
+			TestLoot/*
+			TestWeapons*
+		UI/Styles/*
+		
+		Blueprints/Characters/ hold all the player and dummy character blueprints, but they aren't really modular like the others
+			mess with the climbing component inside PlayerCharacter, to mess with all the movement settings!
+
+=================================================================================================================
+UI
+=================================================================================================================
+	IngameHUD - this is just a test widget, will be removing this eventually, but its a good reference for making other widgets
+	IngameMenu - this is a container for making the pause menu. player controller binds the start button to a function which simply InGameMenu->ToggleMenu()
+	SpaceHUD - this is a default class, set in the SpaceShooterGameMode.cpp (i think) - important function is the DrawHUD(), it uses Canvas->DrawItem calls instead of widgets
+	TradeMenu - nother container, this one for the trademenu, playercontroller calls this (forget func name) ToggleTradeMenu(AActor merchant); so its players and merchants inventory side by side.
+	Menus
+		InventoryWidget
+			-Shows the UI for the inventorywidget, AND handles the sorting logic of the inventory array
+		ItemHeaderWidget
+			-This is the buttons to sort by name/value/etc, it builds a different header depending on the category
+		ItemWidget
+			-this is the actual item button in the menu
+		TradeWidget
+			-this is a widget, but it just makes two InventoryWIdget as children, it also delegates the UseItem function to either Give or Take Item
+	Styles
+		Pretty much copy pasted these from a slate tutorial (TODO put link in here)
+		These are important and referenced everywhere in the widgets, they literally define how the widget will look
+	
+	
+	
+=================================================================================================================
+Components
+=================================================================================================================
+	ClimbingMovement - this is edited source from [forget author, its googleable if you search climbing movement unreal engine forums or something]
+		-this handles a lot, but our final use is for a clone of the halo 5 movement system (minus the thruster/slam stuff)
+		-has a helper class inside too (Lib::Msg is nice) - was a great find to help in understanding some basic unreal engine code (like line traces!)
+	EquipmentComponent
+		-this handles equipables, essentially what guns your holding/can use
+	HealthComponent
+		-this handles taking damage, recharging the shield. TODO shield recharge logic, its in blueprint, havnt converted it to c++ yet
+	InventoryComponent
+		-holds TArray of FItems, and handles the adding/removing of items
+	OverlapObject
+		-this is used by ClimbingMovement - doesn't look too fancy, but more or less dont touch it, until we fully understand how its used in climbing movement
+
+
+
+=================================================================================================================
+Characters
+=================================================================================================================
+	BaseTraine	- this is the base "character" of the game, has health/equipment/inventory 
+		Trainer - this is the player character, has input mappings, movement stuff, action stuff
+	PlayerCharacterController  - this is just an extention on Unreals PlayerController, maybe it should be renamed TrainerController
+
+
+=================================================================================================================
+Creatures / Monsters / cool name
+=================================================================================================================
+	BaseMonster
+		FlyingMon
+		SwimMon
+		SpecialMon
+
+
+=================================================================================================================
+Items 
+	- very broad term, basicaly any actor/entity that isnt a human character or monster
+Item.h	- all hail item.h, this guy is king
+	-this has a lot of useless propertys atm, but it also stores enums for all the itemtypes/etcetc, 
+	every "Item" in the game will have an FItem SelfItem member, this is the base data for all items, and how they can be converted from Loot -> Equipable back to -> Loot
+=================================================================================================================
+	Equipable
+		MeleeWeapon
+		Weapon
+			InstantHitWeapon
+			Projectile
+			ProjectileWeapon
+		Throwable
+			Grenade
+			Pokeball
+		GrappleHook - picture spiderman gun, you point shoot, it makes a rope, you can climb up/descend rope, and also swing from it physics like
+			HookShot - this would be an upgrade, same thing as grapple, but now you have the option to zip across instantly, so you could shoot it across a canyon, where there was no higher thing to swing from
+		GliderSuit - the ability to jump off mountains and glide down, idea is from farcry, but this could be a lategame type item
+		Skateboard - or at least, an item you can equip, but itd be a small vehicle, idea with skateboard, is it could be its own mini game - you could kickflip and grind your way to the next city / objective
+	
+	Vehicles
+		warthog
+		ghost
+		tank
+		bikes
+		
+	Interactables
+		SignPost
+		Button/Switch
+		ComputerTerminal
+		Door
+	Loot
+		AmmoPickups
+		UpgradePickups
+		WeaponPickups
+		Junk/Clutter
+		Ingredients/Craftable
+		EtcWorldActor containers for other types of items eg. weapons/ammo pickups
+		Collectibles
+	Upgrades
+		ShieldUpgrades
+			RechargeRate
+			ShieldEnergy
+			VariousResistenceBuffs
+		MovementUpgrades
+			MovementSpeed
+			jump height
+			double jump
