@@ -81,6 +81,17 @@ public:
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character", meta = (AllowPrivateAccess = "true"))
 			class UInventoryComponent* Inventory;
 
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character", meta = (AllowPrivateAccess = "true"))
+			class UInteractionComponent* Interaction;
+
+			/*
+			UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Character", meta = (AllowPrivateAccess = "true"))
+			class UInteractionComponent* Interaction;
+
+			Interaction = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction"));
+			AddOwnedComponent(Interaction);
+			Interaction->InteractionType = EInteractionType::Character;
+			*/
 
 
 

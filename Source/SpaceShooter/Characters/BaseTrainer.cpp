@@ -12,6 +12,7 @@
 #include "Items/Item.h"
 #include "Items/Lootable.h"
 #include "Components/InventoryComponent.h"
+#include "Components/InteractionComponent.h"
 #include "ImageUtils.h"
 
 
@@ -37,7 +38,12 @@ ABaseTrainer::ABaseTrainer(const FObjectInitializer& ObjectInitializer) : Super(
 	ClimbCapsule->SetCapsuleRadius(45.5);
 	
 
-	
+
+	Interaction = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction"));
+	AddOwnedComponent(Interaction);
+	Interaction->InteractionType = EInteractionType::Character;
+
+
 	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 	AddOwnedComponent(Health);
 
@@ -187,6 +193,8 @@ void ABaseTrainer::OnDeath()
 
 	//kill behavior tree when ai is going
 
+	//------------------//------------------//------------------
+	//The following effectively "Ragdolls" the mesh
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 
@@ -199,24 +207,14 @@ void ABaseTrainer::OnDeath()
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->WakeAllRigidBodies();
 	GetMesh()->bBlendPhysics = true;
-	//GetMesh()->AddImpulse
+	//------------------//------------------//------------------
 
 
-	/*
-	GetMesh()->SetSimulatePhysics(true);
-	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	*/
+	//This destroys the body after 5 seconds
+	//FTimerHandle DeathHandle;
+	//float delaytime = 5.0;
+	//GetWorldTimerManager().SetTimer(DeathHandle, this, &ABaseTrainer::HandleDeath, delaytime, false);
 
-
-
-
-	FTimerHandle DeathHandle;
-	float delaytime = 5.0;
-	GetWorldTimerManager().SetTimer(DeathHandle, this, &ABaseTrainer::HandleDeath, delaytime, false);
-
-	//GetWorldTimerManager().SetTimer(TimerHandle_DestroyActorTimer, &ABaseTrainer::Destroy, 10.0, false);
-	//GetWorldTimerManager().SetTimer(TimerHandle_DestroyActorTimer , this, &ABaseTrainer::Destroy, 10.0, false);
-	//Destroy();
 }
 
 void ABaseTrainer::HandleDeath()

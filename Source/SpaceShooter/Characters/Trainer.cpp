@@ -15,7 +15,7 @@
 #include "ImageUtils.h"
 #include "Items/Weapons/AmmoLoot.h"
 #include "Characters/PlayerCharacterController.h"
-
+#include "Components/InteractionComponent.h"
  
 
 
@@ -479,14 +479,43 @@ AActor* ATrainer::GetReachable()
 void ATrainer::ActionX()
 {
 	bActionButtonDown = true;
+
 	
 	if (ReachableActor)
 	{
-		ALootable* overlappedLoot = Cast<ALootable>(ReachableActor);
-		if (overlappedLoot)
+		UInteractionComponent* Interaction = ReachableActor->FindComponentByClass<class UInteractionComponent>();
+		switch (Interaction->GetInteractionType())
 		{
-			PickupLoot(overlappedLoot);
+		case EInteractionType::None:
+			break;
+		case EInteractionType::Button:
+			Interaction->Action();
+			break;
+		case EInteractionType::Loot:
+			if (Cast<ALootable>(ReachableActor))
+			{
+				PickupLoot(Cast<ALootable>(ReachableActor));
+			}
+			break;
+		case EInteractionType::Container:
+			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+			
+			break;
+		case EInteractionType::Sign:
+			break;
+		case EInteractionType::Terminal:
+			break;
+		case EInteractionType::Character:
+			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+			
+			break;
+		default:
+			break;
 		}
+
+
+		/*
+		
 		else if (Cast<ABaseTrainer>(ReachableActor))
 		{
 			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
@@ -495,10 +524,8 @@ void ATrainer::ActionX()
 		{
 			Lib::Msg("No Overlap of LOOT!");
 		}
+		*/
 	}
-	//else if (ReachableActor->FindComponentByClass<class UInventoryComponent>())
-	/*
-	*/
 	else
 	{
 		if (Equipment->CurrentItem && Cast<AWeapon>(Equipment->CurrentItem))

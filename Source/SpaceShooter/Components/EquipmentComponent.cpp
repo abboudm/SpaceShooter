@@ -48,7 +48,8 @@ FItem UEquipmentComponent::Equip(FItem equipItem)
 	SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParam.Instigator = PawnOwner;
 	//testItem.EquipableClass = FString("/Game/Blueprints/TestWeapon/TestRifle.TestRifle_C");
-	UClass* Iclass = equipItem.EquipableClass.ResolveClass();
+	//UClass* Iclass = equipItem.EquipableClass.ResolveClass();
+	UClass* Iclass = equipItem.EquipableClass.TryLoadClass<AEquipable>();
 
 	if (!Iclass)
 	{
@@ -104,7 +105,8 @@ void UEquipmentComponent::DropItem(FItem item)
 	SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParam.Instigator = PawnOwner;
 	//testItem.EquipableClass = FString("/Game/Blueprints/TestWeapon/TestRifle.TestRifle_C");
-	UClass* Iclass = item.LootClass.ResolveClass();
+	//UClass* Iclass = item.LootClass.ResolveClass();
+	UClass* Iclass = item.LootClass.TryLoadClass<ALootable>();
 
 	if (!Iclass)
 	{
@@ -174,8 +176,9 @@ FItem UEquipmentComponent::EquipBackpack(FItem equipItem)
 	SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParam.Instigator = PawnOwner;
 	//testItem.EquipableClass = FString("/Game/Blueprints/TestWeapon/TestRifle.TestRifle_C");
-	UClass* Iclass = equipItem.EquipableClass.ResolveClass();
-
+	//UClass* Iclass = equipItem.EquipableClass.ResolveClass();
+	//UClass* Iclass = equipItem.EquipableClass.TryLoadClass();
+	UClass* Iclass = equipItem.EquipableClass.TryLoadClass<AEquipable>();
 	if (!Iclass)
 	{
 		Lib::Msg("God damnclass");

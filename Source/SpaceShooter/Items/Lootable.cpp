@@ -4,6 +4,7 @@
 #include "Items/Item.h"
 #include "Items/Equipable.h"
 #include "Lootable.h"
+#include "Components/InteractionComponent.h"
 
 UStaticMeshComponent* ALootable::GetMesh()
 {
@@ -80,7 +81,12 @@ ALootable::ALootable(const class FObjectInitializer& PCIP) : Super(PCIP)
 		Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 	
-	
+	Interaction = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction"));
+	AddOwnedComponent(Interaction);
+	Interaction->InteractionType = EInteractionType::Loot;
+
+
+
 }
 
 void ALootable::BeginPlay()

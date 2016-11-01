@@ -45,7 +45,9 @@ public:
 	void AddGold(int gold);
 	int UseGold(int gold);
 private:
+	UPROPERTY()
 	TArray<FItem> ItemInventory;
+	UPROPERTY()
 	float Gold;
 	
 };
