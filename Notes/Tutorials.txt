@@ -1,0 +1,93 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Unreal Documentation
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+https://docs.unrealengine.com/latest/INT/Gameplay/index.html 	
+		-Gameplay/Framework. Good starting point into the unreal docs, specifically the Framework tab. Also lookup AActor and UObject, those are crucial to understand most any object
+
+https://docs.unrealengine.com/latest/INT/Programming/index.html
+		-Programming guide, basic hub to find programming related pages
+		-check out/explore:
+			UObject
+			AActor 		-also naming conventions: A - actor, U, object, E, Enum, I interface, F struct, etc etc, this is crucial, as project wont build if not using conventions
+			Delagates 	-used to call events/functions from other classes, you have to bind a delagate to a function
+			TArray/TMap 	-unreals array class
+			Structs		-yeah yeah, structs are structs, but check out unreals documentation for it / look at our source code to get an idea, the crucial part here is...
+			MACROS		-these are things like UFUNCTION() UPROPERTY() UCLASS() UENUM() and more; these are Unreal Magic functions (haha) it does magic to make the code work!
+			Reflection System	-related to macros, the reflection system is very important  - one example is this is how blueprints can use c++ data types/objects
+
+https://docs.unrealengine.com/latest/INT/Resources/SampleGames/index.html
+		-Holy grail of source code
+		-each one of these projects (which you download in the unreal launcher, just search for Shooter Game or w/e) has:
+			-source code
+			-assetts
+		that are FREE to use in commercial games! 
+	Speaking of which, the biggest tradeoff to developing with unreal, is that if your project starts making money, unreal gets a percentage of it (i dont care, if this gets to the point where we make serious money, that is gonna be way beyond my expected goals)
+
+	Anyway, Most of my weapon code + UI code is from the Shooter Game project
+	if you download one of these projects:
+		go to the directory
+		right click the project file
+		generate visual studio files, and bam, now you got a ShooterGame.sln
+
+
+//---------These pages are in the Wiki, under category CODE, so start there for super specifc topics, like a save system or how to make a projectile
+https://wiki.unrealengine.com/Category:Code
+		Tutorials using c++ for various systems/gameplay stuff, check em out!
+
+https://wiki.unrealengine.com/Save_System,_Read_%26_Write_Any_Data_to_Compressed_Binary_Files
+		Author: Rama - this guy is insane, he has a toooon of tutorials, mostly c++, but also a ton of blueprint plugins
+		C++ tutorial on saving data - this is gonna be super crucial, as it will take care of
+			-saving games/loading games/game menu stuff/settings
+			-saving level objects - dynamic world. so if you drop an item in a room, it will stay there next time we load the lvl
+			-persistant user data - keeping inventory and other data structs in tact between loading lvls
+
+https://wiki.unrealengine.com/Custom_Character_Movement_Component
+		Title, should be good. Havnt read thru this since ClimbingMovement took care of this!
+
+
+honestly, just explore the unreal engine docs, theres a LOT
+
+but if you want to explore a more specific topic, and its not obvious where to start (cause i was there for a few topics like the reflection system)
+let me know, and i'll either tell you the unreal related name, or we'll research it together, haha
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sample Projects/Tutorials/Sample Assets
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+https://github.com/tomlooman/EpicSurvivalGameSerie://github.com/tomlooman/EpicSurvivalGameSeries
+		Here is where a lot of other code was inspired from: this has a lot of working stuff
+		i think its made by an epic employee, but its not an official sample project. or maybe it is, idk, found it thru github
+		essentially, i copied all of this project's textures/materials/particle effects, to use in our project- but some are wonky - specifically the pistol muzzle flash!
+		this is a good project to lookaround in and see how everything fits in a complete project
+		other aspect is this is a c++/blueprints project, which is the type of project were making!
+
+
+https://github.com/Deema35/Climbing-Movement-Component
+		Climbing Component that were using. Mine however is slightly edited, replaced russian velocyity/stupid spelling. End game is to write our own version of this, not just copying this guys stuff
+
+https://github.com/artemavrin/UE4-DialogueSystem
+		this is the github i copied the DialogueSystem folder from. again, another good example to look around, but were not gonna do this kind of implementation
+		actually, thats a TODO, which is delete our DialogueSystem folder & code
+
+https://forums.unrealengine.com/showthread.php?80021-Free-Community-Assets
+		FREE ASSETS - i got the pistol/some gun meshes from here
+
+https://wiki.unrealengine.com/Quest_Framework
+		Quest framework, super simple, might not be needed, but could help with ideas for other systems
+
+MindlessPursuits Youtube - these aren't too important, as its all in blueprints, but this guy did a good job teaching basic game concepts, recommended but not necessary to watch
+	https://www.youtube.com/playlist?list=PL4g86nVHyAEca_lA88sXaJX58hI78sekA
+		I watched basic pickups / ai, but i forget how different the video is to how i'm doing it, should be pretty similar core ideas tho.
+	https://www.youtube.com/playlist?list=PL4g86nVHyAEeqgu0MT0ZVZJ86svftAMjr
+		I went through this whole playlist when making the blueprint only project i have (which btw, i can send you so you can see how i did stuff) 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Havnt checked these out really, just bookmarked em. Might be useful
+
+https://forums.unrealengine.com/showthread.php?108618-Ratchet-and-Clank-Guns-Mechanics-and-Gadgets
+
+https://forums.unrealengine.com/showthread.php?114087-The-Construc-s-Material-Functions-Blo://forums.unrealengine.com/showthread.php?114087-The-Construc-s-Material-Functions-Blog
