@@ -41,12 +41,12 @@ AEquipable::AEquipable(const class FObjectInitializer& PCIP) : Super(PCIP)
 		Mesh->AlwaysLoadOnClient = true;
 		Mesh->AlwaysLoadOnServer = true;
 		Mesh->bOwnerNoSee = false;
-		Mesh->MeshComponentUpdateFlag = EMeshComponentUpdateFlag::OnlyTickPoseWhenRendered;
+		//Mesh->MeshComponentUpdateFlag = EMeshComponentUpdateFlag::OnlyTickPoseWhenRendered;
 		Mesh->bReceivesDecals = true;
 		Mesh->CastShadow = true;
 		Mesh->bCastDynamicShadow = true;
 		Mesh->bAffectDynamicIndirectLighting = true;
-		Mesh->PrimaryComponentTick.TickGroup = TG_PrePhysics;
+		//Mesh->PrimaryComponentTick.TickGroup = TG_PrePhysics;
 		static FName MeshCollisionProfileName(TEXT("WeaponMesh"));
 		Mesh->SetCollisionProfileName(MeshCollisionProfileName);
 		Mesh->bGenerateOverlapEvents = false;
@@ -66,6 +66,11 @@ AEquipable::AEquipable(const class FObjectInitializer& PCIP) : Super(PCIP)
 
 	}
 
+}
+void AEquipable::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	Lib::Msg("TICKITY IN THE EQUIPPY!"); 
 }
 
 void AEquipable::UpdateItem(FItem item)

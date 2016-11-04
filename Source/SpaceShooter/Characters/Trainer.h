@@ -16,6 +16,7 @@ class SPACESHOOTER_API ATrainer : public ABaseTrainer
 {
 	GENERATED_BODY()
 public:
+
 	//---------------------------------------------------------
 	//Spring arm and Camera inherited variables in blueprint
 	//

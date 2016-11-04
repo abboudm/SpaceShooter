@@ -9,6 +9,17 @@
 
 
 UENUM(BlueprintType)
+enum class EButtonDamageHandle : uint8
+{
+	None,
+	ButtonOnHit,
+	DestroyOnHit,
+	ButtonAndDestroyOnHit,
+	ButtonOnDeath,
+};
+
+
+UENUM(BlueprintType)
 enum class EInteractionType : uint8
 {
 	None,
@@ -39,6 +50,10 @@ public:
 	//Button Channel to broadcast
 	UPROPERTY(EditDefaultsOnly, Category = Button)
 		int BroadcastChannel;
+
+	UPROPERTY(EditDefaultsOnly, Category = Button)
+		EButtonDamageHandle DamageHandleType;
+
 
 	//Dialogue
 	TArray<UObject> Dialogue;

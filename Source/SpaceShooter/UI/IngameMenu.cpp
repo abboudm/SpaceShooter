@@ -46,11 +46,23 @@ void FIngameMenu::Construct(APlayerCharacterController* _PC)
 
 void FIngameMenu::DetachGameMenu()
 {
+
 	if (GEngine && GEngine->GameViewport)
 	{
 		GEngine->GameViewport->RemoveViewportWidgetContent(GameMenuContainer.ToSharedRef());
 		//FSlateApplication::Get().SetFocusToGameViewport();
 		FSlateApplication::Get().SetUserFocusToGameViewport(0);
+		if (PC)
+		{
+			// Make sure viewport has focus
+			//PC->SetPause(false);
+			//PC->bShowMouseCursor = false;
+			PC->SetGameMenuUp(false);
+			UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
+			FSlateApplication::Get().SetAllUserFocusToGameViewport();
+		}
+
+	
 	}
 	bIsGameMenuUp = false;
 
@@ -111,15 +123,6 @@ void FIngameMenu::ToggleGameMenu()
 	{
 		//Start hiding animation
 		//GameMenuWidget->HideMenu();
-		if (PC)
-		{
-			// Make sure viewport has focus
-			//PC->SetPause(false);
-			//PC->bShowMouseCursor = false;
-			PC->SetGameMenuUp(false);
-			UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
-			FSlateApplication::Get().SetAllUserFocusToGameViewport();
-		}
 		DetachGameMenu();
 	}
 }

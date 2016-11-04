@@ -38,7 +38,6 @@ void APlayerCharacterController::BeginPlay()
 
 	//Build menu only after game is initialized
 	IngameMenu = MakeShareable(new FIngameMenu());
-	TradeMenu = MakeShareable(new FTradeMenu());
 	//IngameMenu->Construct();
 	//IngameMenu->Construct(Cast<ULocalPlayer>(Player));
 	/*
@@ -52,21 +51,36 @@ void APlayerCharacterController::BeginPlay()
 
 void APlayerCharacterController::ConstructAndShowTradeMenu(AActor* other)
 {
-	if (TradeMenu.IsValid())
+	if (!IsGameMenuUp())
 	{
-		TradeMenu->Construct(this, other);
-		TradeMenu->ToggleGameMenu();
+		GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, other->GetName());
+		TradeMenu = MakeShareable(new FTradeMenu());
+		if (TradeMenu.IsValid())
+		{
+			TradeMenu->Construct(this, other);
+			TradeMenu->ToggleGameMenu();
+
+		}
 	}
 }
 
 void APlayerCharacterController::OnToggleInGameMenu()
 {
-	if (IngameMenu.IsValid())
+	if (!IsGameMenuUp())
 	{
-		IngameMenu->ToggleGameMenu();
-			
+		if (IngameMenu.IsValid())
+		{
+			IngameMenu->ToggleGameMenu();
+
+		}
 	}
-	
+	else
+	{
+		if (IngameMenu.IsValid())
+		{
+			IngameMenu->DetachGameMenu();
+		}
+	}
 }
 
 bool APlayerCharacterController::IsGameMenuUp() { return bGameMenuUp; }

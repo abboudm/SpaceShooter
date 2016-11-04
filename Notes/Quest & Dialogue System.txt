@@ -1,3 +1,4 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 So I've been brainstorming how to implement a quest/dialogue system
 i really think we should pretty much copy bethesda in how they do it for the skyrim engine (rando fun fact, fallout 4 is the skyrim engine, just a bit updated! At least, thats what they say on the Fallout mod page)
 
@@ -40,6 +41,16 @@ Anyway, scripting is gonna be key because my idea (and how bethesda does it) is 
 	anyway, this is hard to explain over text, some of the ideas i have so far haha
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Alright, screw scripts. I figured out how to implement
+Any of the objects below will be created with blueprints
+then there will be a bound event "RunScript" or something, and we make logic in the blueprint
+furthermore, theres a few techniques i found to get this solid:
+  Custom Level Class - this would then hold quest events/checkers and can easily help with the scripting problem
+  Custom Console Commands - we can just use unreal engines console, for our own console! 
+
+  both of these are in tutorials by rama - google solus tutorials
+
+
 November 1st
 
 Ok, didn't want to delete/modify above, but i went through the creation kit tutorials on making a quest

@@ -55,6 +55,9 @@ public:
 	//Initializer & Overrides from Equipable.h
 	AWeapon(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnWeaponTick"))
+		void WeaponTick(float DeltaSeconds);
+
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnPrimaryTrigger() override;
 	virtual void OnStopPrimaryTrigger() override;

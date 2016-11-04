@@ -10,6 +10,9 @@
 #include "Items/Lootable.h"
 #include "UI/Styles/GlobalMenuStyle.h"
 #include "UI/Styles/MenuStyles.h"
+#include "Components/Interfaces/ButtonInterface.h"
+#include "Components/InteractionComponent.h"
+#include "Items/Statics/WorldStatic.h"
 const float ASpaceHUD::MinHudScale = 0.5f;
 
 
@@ -117,6 +120,27 @@ void ASpaceHUD::DrawActionIcon()
 			Canvas->DrawItem(TextItem, CenterX - 50, CenterY + 50);
 
 		}
+    else if (Cast<AWorldStatic>(reachable))
+    {
+		//UInteractionComponent* Interaction = reachable->FindComponentByClass<class UInteractionComponent>
+		//if (false)
+		{
+			FCanvasTextItem TextItem(FVector2D::ZeroVector, FText::GetEmpty(), NormalFont, HUDDark);
+			TextItem.EnableShadow(FLinearColor::Black);
+
+
+			TextItem.Text = FText::FromString("Press X to Use");
+			TextItem.Scale = FVector2D(2, 2);
+			float CenterX = Canvas->ClipX / 2;
+			float CenterY = Canvas->ClipY / 2;
+
+			Canvas->DrawItem(TextItem, CenterX - 50, CenterY + 50);
+
+		}
+
+    }
+		/*
+		*/
 
 
 	}

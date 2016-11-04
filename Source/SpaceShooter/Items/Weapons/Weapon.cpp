@@ -24,7 +24,7 @@ AWeapon::AWeapon(const class FObjectInitializer& PCIP) : Super(PCIP)
 
 	bBottomlessClip = false;
 	bFullAuto = true;
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> DefualtMeshOb(TEXT("SkeletalMesh'/Game/SkeletalMeshs/Weapons/BaseRifle/Interstel_BaseRifle.Interstel_BaseRifle'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> DefualtMeshOb(TEXT("SkeletalMesh'/Game/SkelatalMesh_and_Animations/Weapons/BaseRifle/Interstel_BaseRifle.Interstel_BaseRifle'"));
 	//static ConstructorHelpers::FObjectFinder<USkeletalMesh> DefualtMeshOb(TEXT("SkeletalMesh'/Game/SkeletalMeshs/Character/Mesh/SK_Mannequin.SK_Mannequin'"));
 
 	DefaultMesh = DefualtMeshOb.Object;
@@ -39,7 +39,9 @@ AWeapon::AWeapon(const class FObjectInitializer& PCIP) : Super(PCIP)
 	SelfItem.BurstDelay = BurstDelay;
 	SelfItem.BurstSize = BurstSize;
 
-
+	PrimaryActorTick.bCanEverTick = true;
+	SetActorTickEnabled(true);
+	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
 void AWeapon::UpdateItem(FItem item)
@@ -739,7 +741,13 @@ void AWeapon::BeginPlay()
 void AWeapon::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "tickidytickdiytickctickdicdjicj");
+	WeaponTick(DeltaSeconds);
+}
 
+void AWeapon::WeaponTick_Implementation(float DeltaSeconds)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "weapontick c++");
 }
 
 void AWeapon::TriggerReload(){	if (CanReload()){	StartReload();	}	}

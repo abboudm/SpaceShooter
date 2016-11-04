@@ -197,6 +197,7 @@ void ATrainer::Tick( float DeltaTime )
 	if (hit)
 	{
 		ReachableActor = hit;
+		//Lib::Msg(hit->GetName());
 		/*
 		ALootable* overlappedLoot = Cast<ALootable>(hit);
 		if (overlappedLoot)
@@ -489,6 +490,7 @@ void ATrainer::ActionX()
 		case EInteractionType::None:
 			break;
 		case EInteractionType::Button:
+      Lib::Msg("Were hittin a button!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			Interaction->Action();
 			break;
 		case EInteractionType::Loot:

@@ -13,6 +13,8 @@ public:
 	// toggles in game menu 
 	void ToggleGameMenu();
 
+	/** removes widget from viewport */
+	void DetachGameMenu();
 
 
 protected:
@@ -34,7 +36,5 @@ protected:
 	// if game menu is currently opened
 	bool bIsGameMenuUp;
 	
-	/** removes widget from viewport */
-	void DetachGameMenu();
 
 };

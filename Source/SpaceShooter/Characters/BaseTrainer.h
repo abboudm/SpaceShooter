@@ -13,6 +13,7 @@
 UCLASS()
 class SPACESHOOTER_API ABaseTrainer : public ACharacter
 {
+	//
 	GENERATED_BODY()
 public:
 	//
@@ -54,7 +55,7 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
+	
 	//------------------------------------------------------------------------
 	// Called to bind functionality to input
 	//virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;

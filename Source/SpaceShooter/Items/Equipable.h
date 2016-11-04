@@ -57,6 +57,11 @@ protected:
 
 
 public:	
+	virtual void Tick(float DeltaSeconds) override;
+	
+
+
+
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 		FName Name;
 	UPROPERTY(EditDefaultsOnly, Category = "Item")

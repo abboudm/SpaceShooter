@@ -73,7 +73,6 @@ void ABaseTrainer::BeginPlay()
 void ABaseTrainer::Tick( float DeltaTime )
 {
 	Super::Tick(DeltaTime);
-	
 }
 
 TArray<FItem> ABaseTrainer::GetInventory()
@@ -184,11 +183,14 @@ void ABaseTrainer::OnDeath()
 {
 	if (Equipment->CurrentItem)
 	{
-		Equipment->DropItem(Equipment->UnEquip());
+		Inventory->AddItemToInventory(Equipment->UnEquip());
+		
+		//Equipment->DropItem(Equipment->UnEquip());
 	}
 	if (Equipment->BackpackItem)
 	{
-		Equipment->DropItem(Equipment->UnEquipBackpack());
+		Inventory->AddItemToInventory(Equipment->UnEquipBackpack());
+		//Equipment->DropItem(Equipment->UnEquipBackpack());
 	}
 
 	//kill behavior tree when ai is going

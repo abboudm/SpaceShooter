@@ -44,7 +44,6 @@ ALootable::ALootable(const class FObjectInitializer& PCIP) : Super(PCIP)
 		Sphere->SetCollisionResponseToChannel(ECC_Visibility, ECR_Overlap);
 		Sphere->SetCollisionResponseToChannel(ECC_Camera, ECR_Overlap);
 		Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	
 	}
 	
 	
@@ -66,6 +65,7 @@ ALootable::ALootable(const class FObjectInitializer& PCIP) : Super(PCIP)
 		Mesh->SetCollisionProfileName(MeshCollisionProfileName);
 		
 		Mesh->SetSimulatePhysics(false);
+		Mesh->BodyInstance.bUseCCD = true;
 		Mesh->bGenerateOverlapEvents = true;
 		Mesh->SetCanEverAffectNavigation(true);
 

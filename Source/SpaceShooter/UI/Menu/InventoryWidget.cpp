@@ -600,7 +600,8 @@ void SInventoryWidget::HideMenu()
 
 FText SInventoryWidget::GetTitle() const
 {
-	FString out = "Window Title";
+	//FString out = "Window Title";
+	FString out = InventoryOwner->GetName();
 	//out.Append(FString::FromInt(pt->GetAmmo(pt->GetCurrentItem().AmmoType)));
 	out.Append("");
 	//out.Append(pt->GetCurrentItem().Name.ToString());

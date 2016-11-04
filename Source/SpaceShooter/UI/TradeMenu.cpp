@@ -93,7 +93,7 @@ void FTradeMenu::ToggleGameMenu()
 		if (PC)
 		{
 			//PCOwner->SetCinematicMode(true, false, false, true, true);
-			//PC->SetPause(true);
+			PC->SetPause(true);
 			//PC->bShowMouseCursor = true;
 			PC->SetGameMenuUp(true);
 			UVirtualCursorFunctionLibrary::EnableVirtualCursor(PC);
@@ -110,7 +110,7 @@ void FTradeMenu::ToggleGameMenu()
 		if (PC)
 		{
 			// Make sure viewport has focus
-			//PC->SetPause(false);
+			PC->SetPause(false);
 			//PC->bShowMouseCursor = false;
 			PC->SetGameMenuUp(false);
 			UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);

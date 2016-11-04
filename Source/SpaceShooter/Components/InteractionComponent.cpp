@@ -9,6 +9,8 @@ UInteractionComponent::UInteractionComponent() : Super()
 {
 	InteractionType = EInteractionType::None;
 	BroadcastChannel = -1;
+	DamageHandleType = EButtonDamageHandle::None;
+
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	//bWantsBeginPlay = true;
@@ -49,18 +51,38 @@ void UInteractionComponent::Action()
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "InteractionType is none, so nothings gonna happen!");
 		break;
 	case EInteractionType::Button:
-		if (BroadcastChannel > -1)
+		if (BroadcastChannel > 0)
 		{
+			for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+			{
+				
+				if(ActorItr->GetClass()->ImplementsInterface(UButtonInterface::StaticClass()))
+				{
+					IButtonInterface::Execute_RecieveButtonMsg(*ActorItr, BroadcastChannel);
+					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "$$$$$$$$$$$$$$$$$$$$ok executing button");
+					//Button->Execute_RecieveButtonMsg(*ActorItr, BroadcastChannel);
+				}
+				
+			
+			}
+			/*
+			*/
+
+
+			/*
 			TArray<AActor* > OutActors;
 			UGameplayStatics::GetAllActorsWithInterface(GetWorld(), UButtonInterface::StaticClass(),OutActors);
 			for (AActor* Actor : OutActors)
 			{
+		    GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "Checken them interfaces!");
 				IButtonInterface* Button = Cast<IButtonInterface>(Actor);
 				if (Button)
 				{
+          GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "$$$$$$$$$$$$$$$$$$$$ok executing button");
 					Button->Execute_RecieveButtonMsg(Actor, BroadcastChannel);
 				}
 			}
+			*/
 		}
 		break;
 	case EInteractionType::Container:
