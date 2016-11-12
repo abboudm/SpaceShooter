@@ -5,7 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "ImpactEffect.generated.h"
 
-UCLASS(ABSTRACT, BlueprintAble)
+UCLASS(Blueprintable, BlueprintType, Abstract)
 class SPACESHOOTER_API AImpactEffect : public AActor
 {
 	GENERATED_BODY()

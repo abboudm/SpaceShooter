@@ -42,7 +42,7 @@ void SItemWidget::Construct(const FArguments& args)
 			.VAlign(VAlign_Fill)
 			.HAlign(HAlign_Fill)
 			[
-				SNew(SButton)
+				SAssignNew(Button, SButton)
 				.ButtonStyle(&MenuStyle->MenuButtonStyle)
 				//.TextStyle(&MenuStyle->MenuButtonTextStyle)
 				//.Text(FText::FromString("Play Game!"))

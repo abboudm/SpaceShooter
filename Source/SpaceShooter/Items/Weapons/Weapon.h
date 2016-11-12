@@ -17,7 +17,7 @@ enum class EWeaponState
 };
 
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType, Abstract)
 class SPACESHOOTER_API AWeapon : public AEquipable
 {
 	GENERATED_BODY()
@@ -55,9 +55,7 @@ public:
 	//Initializer & Overrides from Equipable.h
 	AWeapon(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnWeaponTick"))
-		void WeaponTick(float DeltaSeconds);
-
+	
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnPrimaryTrigger() override;
 	virtual void OnStopPrimaryTrigger() override;
@@ -221,6 +219,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int32 GetCurrentAmmo() const;
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int32 GetCurrentAmmoInClip() const;
+
 	
 	int32 GiveAmmo(int32 AddAmount);
 
@@ -228,9 +229,6 @@ public:
 	/*
 	void SetAmmoCount(int32 NewTotalAmount);
 
-
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int32 GetCurrentAmmoInClip() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int32 GetMaxAmmoPerClip() const;

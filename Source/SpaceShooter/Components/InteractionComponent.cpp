@@ -2,6 +2,7 @@
 
 #include "SpaceShooter.h"
 #include "InteractionComponent.h"
+#include "DialogueSystem/Branch.h"
 #include "Components/Interfaces/ButtonInterface.h"
 
 // Sets default values for this component's properties
@@ -24,7 +25,7 @@ UInteractionComponent::UInteractionComponent() : Super()
 void UInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupAction();
+	ConstructDialogueBranchs();
 }
 
 
@@ -39,9 +40,15 @@ void UInteractionComponent::TickComponent( float DeltaTime, ELevelTick TickType,
 
 
 
-void UInteractionComponent::SetupAction()
+void UInteractionComponent::ConstructDialogueBranchs()
 {
-
+	for (TSubclassOf<class UBranch> BranchClass : BranchClasses)
+	{
+		UObject* Outer = GetOwner();
+		UBranch* out = NewObject<UBranch>(Outer, BranchClass);
+		out->Construct(GetOwner(), GetWorld());
+		Branchs.Add(out);
+	}
 }
 void UInteractionComponent::Action()
 {

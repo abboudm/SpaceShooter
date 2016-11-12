@@ -7,7 +7,7 @@
 #include "TradeMenu.h"
 #include "UI/Menu/TradeWidget.h"
 
-#include "VirtualCursor/VirtualCursorFunctionLibrary.h"
+//#include "VirtualCursor/VirtualCursorFunctionLibrary.h"
 //#include "UI/ShooterHUD.h"
 
 //#define LOCTEXT_NAMESPACE "ShooterGame.HUD.Menu"
@@ -28,7 +28,9 @@ void FTradeMenu::Construct(APlayerCharacterController* _PC, AActor* _Trader)
 		SAssignNew(GameMenuWidget, STradeWidget)
 			.InventoryOwner(Cast<AActor>(PC->GetPawn()))
 			.Trader(Trader)
-			.Cursor(EMouseCursor::Default);
+			.PC(PC)
+			.Cursor(EMouseCursor::None)
+			;
 		
 		//GameMenuWidget->MainMenu = GameMenuWidget->CurrentMenu = RootMenuItem->SubMenu;
 		//GameMenuWidget->OnMenuHidden.BindSP(this,&FTradeMenu::DetachGameMenu);
@@ -43,6 +45,19 @@ void FTradeMenu::DetachGameMenu()
 {
 	if (GEngine && GEngine->GameViewport)
 	{
+		if (PC)
+		{
+			// Make sure viewport has focus
+			PC->SetPause(false);
+			//PC->bShowMouseCursor = false;
+			PC->SetGameMenuUp(false);
+			FInputModeGameOnly Mode;
+			PC->SetInputMode(Mode);
+			PC->bShowMouseCursor = false;
+			
+			//UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
+			//FSlateApplication::Get().SetAllUserFocusToGameViewport();
+		}
 		GEngine->GameViewport->RemoveViewportWidgetContent(GameMenuContainer.ToSharedRef());
 		//FSlateApplication::Get().SetFocusToGameViewport();
 		FSlateApplication::Get().SetUserFocusToGameViewport(0);
@@ -96,7 +111,11 @@ void FTradeMenu::ToggleGameMenu()
 			PC->SetPause(true);
 			//PC->bShowMouseCursor = true;
 			PC->SetGameMenuUp(true);
-			UVirtualCursorFunctionLibrary::EnableVirtualCursor(PC);
+			PC->bShowMouseCursor = false;
+			FInputModeUIOnly Mode;
+			Mode.SetWidgetToFocus(GameMenuWidget);
+			PC->SetInputMode(Mode);
+			//UVirtualCursorFunctionLibrary::EnableVirtualCursor(PC);
 		}
 		else
 		{
@@ -107,15 +126,6 @@ void FTradeMenu::ToggleGameMenu()
 	{
 		//Start hiding animation
 		//GameMenuWidget->HideMenu();
-		if (PC)
-		{
-			// Make sure viewport has focus
-			PC->SetPause(false);
-			//PC->bShowMouseCursor = false;
-			PC->SetGameMenuUp(false);
-			UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
-			FSlateApplication::Get().SetAllUserFocusToGameViewport();
-		}
 		DetachGameMenu();
 	}
 	/*

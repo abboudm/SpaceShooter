@@ -22,7 +22,8 @@ public:
 
 	void Construct(const FArguments& args);
 	const struct FGlobalStyle* MenuStyle;
-	
+	TSharedPtr<class SButton> Button;
+
 /*
 	All
 		Name(Quant)		itemtype	value	weight

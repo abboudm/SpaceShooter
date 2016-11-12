@@ -37,12 +37,20 @@ public:
 
 
 	FItem GetItem(int index);
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	void AddItemToInventory(FItem item);
+
 	void RemoveItemFromInventory(int index);
+
 	void RemoveItemFromInventory(FItem item);
+
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	int HasItemAlready(FItem item);
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	int GetGold();
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	void AddGold(int gold);
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	int UseGold(int gold);
 private:
 	UPROPERTY()

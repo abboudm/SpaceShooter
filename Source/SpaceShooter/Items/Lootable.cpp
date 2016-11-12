@@ -16,11 +16,13 @@ UStaticMeshComponent* ALootable::GetMesh()
 ALootable::ALootable(const class FObjectInitializer& PCIP) : Super(PCIP)
 {
 	Name = "Lootable";
-	Description = "This is an Lootable item, like a static gun or apple";
+	Description = "This loot was created before the item, Root=Loot!";
 	Quantity = 1;
 	Value = 10;
 	Weight = 1.0;
 	ItemType = EItemType::Loot;
+
+
 	/*
 	Sphere = CreateOptionalDefaultSubobject<USphereComponent>("SphereTrigger0");
 	Mesh = CreateOptionalDefaultSubobject<UStaticMeshComponent>("LootableMesh0");
@@ -91,6 +93,40 @@ ALootable::ALootable(const class FObjectInitializer& PCIP) : Super(PCIP)
 
 void ALootable::BeginPlay()
 {
+	Super::BeginPlay();
+
+
+}
+
+void ALootable::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
+
+FItem ALootable::SafeGetItem()
+{
+	SelfItem.Name = Name;
+	SelfItem.Description = Description;
+	SelfItem.Value = Value;
+	SelfItem.Weight = Weight;
+	SelfItem.ItemType = ItemType;
+	SelfItem.LootType = LootType;
+	SelfItem.Quantity = Quantity;
+	if (EquipClass)
+	{
+		SelfItem.EquipableClass = FStringClassReference::GetOrCreateIDForClass(EquipClass);
+	}
+	SelfItem.LootClass = FStringClassReference::GetOrCreateIDForClass(this->GetClass());
+	return SelfItem;
+}
+
+FItem ALootable::GetItem()
+{
+	return SelfItem;
+}
+void ALootable::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 	SelfItem.Name = Name;
 	SelfItem.Description = Description;
 	SelfItem.Value = Value;
@@ -109,18 +145,6 @@ void ALootable::BeginPlay()
 	}
 	SelfItem.LootClass = FStringClassReference::GetOrCreateIDForClass(this->GetClass());
 
-
-
-}
-
-
-FItem ALootable::GetItem()
-{
-	return SelfItem;
-}
-void ALootable::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
 	SelfItem.ItemType = ItemType;
 	
 	/*
@@ -138,7 +162,13 @@ void ALootable::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void ALootable::UpdateItem(FItem item)
 {
 	SelfItem = item;
-	SelfItem.ItemType = ItemType;
+	Name = SelfItem.Name;
+	Description = SelfItem.Description;
+	Quantity = SelfItem.Quantity;
+	Value = SelfItem.Value;
+	Weight = SelfItem.Weight;
+	ItemType = SelfItem.ItemType;
+	//SelfItem.ItemType = ItemType;
 }
 
 float ALootable::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)

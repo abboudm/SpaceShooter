@@ -9,7 +9,7 @@
 #include "AmmoLoot.generated.h"
 
 
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable,BlueprintType,Abstract)
 class SPACESHOOTER_API AAmmoLoot : public ALootable
 {
 	GENERATED_BODY()

@@ -343,6 +343,12 @@ void ATrainer::SecondaryTrigger()
 }
 void ATrainer::ActionLB()
 {
+	//quick hack to add swim up/down
+	if (ClimbingMovement->IsSwimming())
+	{
+		ClimbingMovement->AddInputVector(FVector(0, 0, -1));
+		return;
+	}
 	//Lib::Msg("ActionLB!");
 	FItem out = Equipment->UnEquip();
 	/*
@@ -359,8 +365,16 @@ void ATrainer::ActionLB()
 }
 void ATrainer::ActionRB()
 {
+	//quick hack to add swim up/down
+	if (ClimbingMovement->IsSwimming())
+	{
+		ClimbingMovement->AddInputVector(FVector(0, 0, 1));
+		return;
+	}
 	//Lib::Msg("ActionRB!");
 	//If Equipped Item, remove and add it to the inventory
+	
+	
 	if (Equipment->CurrentItem && Inventory)
 	{
 			Inventory->AddItemToInventory(Equipment->UnEquip());
@@ -485,36 +499,50 @@ void ATrainer::ActionX()
 	if (ReachableActor)
 	{
 		UInteractionComponent* Interaction = ReachableActor->FindComponentByClass<class UInteractionComponent>();
-		switch (Interaction->GetInteractionType())
-		{
-		case EInteractionType::None:
-			break;
-		case EInteractionType::Button:
-      Lib::Msg("Were hittin a button!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			Interaction->Action();
-			break;
-		case EInteractionType::Loot:
-			if (Cast<ALootable>(ReachableActor))
-			{
-				PickupLoot(Cast<ALootable>(ReachableActor));
-			}
-			break;
-		case EInteractionType::Container:
-			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
-			
-			break;
-		case EInteractionType::Sign:
-			break;
-		case EInteractionType::Terminal:
-			break;
-		case EInteractionType::Character:
-			Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
-			
-			break;
-		default:
-			break;
-		}
+    if (Interaction)
+    {
+      switch (Interaction->GetInteractionType())
+      {
+      case EInteractionType::None:
+        break;
+      case EInteractionType::Button:
+        Interaction->Action();
+        break;
+      case EInteractionType::Loot:
+        if (Cast<ALootable>(ReachableActor))
+        {
+          PickupLoot(Cast<ALootable>(ReachableActor));
+        }
+        break;
+      case EInteractionType::Container:
+        Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+        
+        break;
+      case EInteractionType::Sign:
+		Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
 
+        break;
+      case EInteractionType::Terminal:
+        break;
+      case EInteractionType::Character:
+		if (Cast<ABaseTrainer>(ReachableActor))
+		{
+			if (!Cast<ABaseTrainer>(ReachableActor)->Health->Alive)
+			{
+				Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+			}
+			else
+			{
+				//Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
+				Lib::Msg("You can't pickpocket me!");
+			}
+		}
+        
+        break;
+      default:
+        break;
+      }
+    }
 
 		/*
 		
@@ -625,22 +653,33 @@ void ATrainer::StopSprinting()
 }
 void ATrainer::MoveForward(float AxisValue)
 {
+	
 	LastMoveForwardAxisValue = AxisValue;
-	if (!bSprinting)
+	
+	if (ClimbingMovement->IsSwimming())
 	{
-		//If Stick is less than 0.25, so close but not  half way if strafing
-		if (AxisValue >= 0.25 && bSprintButtonDown)
+		FVector CamLoc;
+		FRotator CamRot;
+		GetController()->GetPlayerViewPoint(CamLoc, CamRot);
+		//FVector AimDir = CamRot.Vector();
+		ClimbingMovement->AddInputVector(CamRot.Vector()*AxisValue); 
+	}
+	else
+	{
+		if (!bSprinting)
 		{
-			bSprinting = true;
+			//If Stick is less than 0.25, so close but not  half way if strafing
+			if (AxisValue >= 0.25 && bSprintButtonDown)
+			{
+				bSprinting = true;
+			}
 		}
-	}
-	if (AxisValue < 0.6 && bSprinting)
-	{
-		bSprinting = false;
+		if (AxisValue < 0.6 && bSprinting)
+		{
+			bSprinting = false;
 		
-	}
-
-	if (ClimbingMovement && (ClimbingMovement->UpdatedComponent == RootComponent))
+		}
+		if (ClimbingMovement && (ClimbingMovement->UpdatedComponent == RootComponent))
 	{
 		switch (ClimbingMovement->GetClimbingMode())
 		{
@@ -667,6 +706,8 @@ void ATrainer::MoveForward(float AxisValue)
 			ClimbingMovement->AddInputVector(UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0)) * AxisValue);
 			break;
 		}
+	}
+
 	}
 }
 

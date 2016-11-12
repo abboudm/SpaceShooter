@@ -9,7 +9,7 @@
 #include "Lootable.generated.h"
 
 
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable,BlueprintType,Abstract)
 class SPACESHOOTER_API ALootable : public AActor
 {
 	GENERATED_BODY()
@@ -60,11 +60,14 @@ public:
 	*/
 	/*
 	*/
-
+	UPROPERTY()
 	FItem SelfItem;
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	virtual FItem GetItem();
+	FItem SafeGetItem();
 	UStaticMeshComponent* GetMesh();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser);
 
 

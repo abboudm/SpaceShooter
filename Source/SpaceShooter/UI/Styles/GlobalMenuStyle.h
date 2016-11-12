@@ -20,7 +20,9 @@ struct FGlobalStyle : public FSlateWidgetStyle
 	static const FGlobalStyle& GetDefault(); // static const FStrategyMenuStyle& GetDefault();
 
 	UPROPERTY(EditAnywhere, Category = Appearance)
-	FButtonStyle MenuButtonStyle;
+		FButtonStyle MenuButtonStyle;
+	UPROPERTY(EditAnywhere, Category = Appearance)
+		FButtonStyle SelectedMenuButtonStyle;
 	UPROPERTY(EditAnywhere, Category = Appearance)
 		FButtonStyle TabButtonStyle;
 	
@@ -36,7 +38,15 @@ struct FGlobalStyle : public FSlateWidgetStyle
 		FTextBlockStyle TitleTextStyle;
 	UPROPERTY(EditAnywhere, Category = Appearance)
 		FTextBlockStyle ItemTextStyle;
-
+	
+	UPROPERTY(EditAnywhere, Category = Appearance)
+		FTextBlockStyle DialogueTextStyle;
+	UPROPERTY(EditAnywhere, Category = Appearance)
+		FTextBlockStyle TopicTextStyle;
+	UPROPERTY(EditAnywhere, Category = Appearance)
+		FButtonStyle TopicButtonStyle;
+	UPROPERTY(EditAnywhere, Category = Appearance)
+		FButtonStyle SelectedTopicButtonStyle;
 
 	UPROPERTY(EditAnywhere, Category = Appearance)
 		FTextBlockStyle HUDTextStyle;

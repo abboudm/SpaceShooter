@@ -18,20 +18,28 @@ AProjectileWeapon::AProjectileWeapon(const class FObjectInitializer& PCIP) : Sup
 	WeaponSpread = 1;
 	ShotTraces = 1;
 }
-
+void AProjectileWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+}
+void AProjectileWeapon::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
 void AProjectileWeapon::UpdateItem(FItem item)
 {
+	/*
 	SelfItem = item;
 	SelfItem.WeaponType = WeaponType;
 	SelfItem.AmmoType = AmmoType;
 	SelfItem.ItemType = ItemType;
-	if (SelfItem.ClipSize != 0) { MaxAmmoPerClip = SelfItem.ClipSize; }
-	//SelfItem.HitDamage = HitDamage;
-	//if (Projectile)
-	//{
-	//	SelfItem.HitDamage = Cast<AProjectile>(Projectile)->GetHitDamage(); // Projectile->HitDamage() doesn't work? tsubclasspointer needs a cast?
-	//}
+	SelfItem.ClipSize = MaxAmmoPerClip;
+	*/
+	Super::UpdateItem(item);
+	SelfItem.HitDamage = Projectile->GetDefaultObject<AProjectile>()->HitDamage;
 }
+/*
+*/
 
 
 float AProjectileWeapon::GetCurrentSpread() const

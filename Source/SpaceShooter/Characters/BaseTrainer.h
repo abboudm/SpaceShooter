@@ -30,20 +30,29 @@ public:
 	//Getters,Setters,Sorters,Etcers,Modifiers way to interact with
 	//	-Equipment,Inventory,Health & Shields, Movement
 	TArray<FItem> GetInventory();
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	bool AddInventory(FItem item);
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	bool RemoveInventory(FItem item);
 	bool RemoveInventory(int id);
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	void DropItem(FItem item);
 
 
 	//UEquipmentComponent* GetEquipment();
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	FItem GetCurrentItem();
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	FItem GetBackpackItem();
 	bool hasCurrentItem();
 	bool hasBackpackItem();
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	void SetCurrentItem(FItem item);
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	void SetBackpackItem(FItem item);
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	FItem RemoveCurrentItem();
+  UFUNCTION(BlueprintCallable, Category="BaseTrainer")
 	FItem RemoveBackpackItem();
 
 

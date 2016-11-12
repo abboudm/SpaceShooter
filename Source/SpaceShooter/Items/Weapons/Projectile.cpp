@@ -87,6 +87,16 @@ void AProjectile::PostInitializeComponents()
 
 }
 
+void AProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AProjectile::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
 //UGameplayStatics::SpawnEmitterAtLocation(this, TracerFX, Origin, ShootDir.Rotation());
 void AProjectile::SpawnTrailEffects()
 {

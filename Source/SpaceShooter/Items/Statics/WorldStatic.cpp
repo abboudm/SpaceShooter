@@ -82,8 +82,13 @@ void AWorldStatic::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
+void AWorldStatic::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
 void AWorldStatic::BeginPlay()
 {
+	Super::BeginPlay();
   /*
 	SelfItem.Name = Name;
 	SelfItem.Description = Description;
@@ -103,7 +108,7 @@ void AWorldStatic::BeginPlay()
 	}
 	SelfItem.LootClass = FStringClassReference::GetOrCreateIDForClass(this->GetClass());
   */
-
+	//GEngine->AddOnScreenDebugMessage(-1, 50, FColor::Red, "WorldStatic Reporting begin play!!!");
 
 
 }

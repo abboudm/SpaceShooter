@@ -3,7 +3,7 @@
 #include "TradeWidget.h"
 #include "UI/Styles/GlobalMenuStyle.h"
 #include "UI/Styles/MenuStyles.h"
-
+#include "Characters/PlayerCharacterController.h"
 #include "Components/InventoryComponent.h"
 #include "UI/Menu/InventoryWidget.h"
 //#include "UI/Menu/ItemWidget.h"
@@ -15,7 +15,9 @@
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void STradeWidget::Construct(const FArguments& args)
 {
+	ActiveWidget = true; //set to the traders default active
 	InventoryOwner = args._InventoryOwner;
+	PC = args._PC;
 	Trader = args._Trader;
 	PlayerInventory = InventoryOwner->FindComponentByClass<class UInventoryComponent>();
 	TraderInventory = Trader->FindComponentByClass<class UInventoryComponent>();
@@ -44,7 +46,8 @@ void STradeWidget::Construct(const FArguments& args)
 			[
 				SAssignNew(PlayerWidget, SInventoryWidget)
 				.InventoryOwner(InventoryOwner)
-				.Cursor(EMouseCursor::Default)
+				.PC(PC)
+				.Cursor(EMouseCursor::None)
 				
 			]
 			+ SCanvas::Slot()
@@ -55,7 +58,8 @@ void STradeWidget::Construct(const FArguments& args)
 			[
 				SAssignNew(TraderWidget, SInventoryWidget)
 				.InventoryOwner(Trader)
-				.Cursor(EMouseCursor::Default)
+				.PC(PC)
+				.Cursor(EMouseCursor::None)
 			]
 
 		];
@@ -65,6 +69,14 @@ void STradeWidget::Construct(const FArguments& args)
 	
 	PlayerWidget->TradeItem.BindSP(this, &STradeWidget::GiveItem);
 	TraderWidget->TradeItem.BindSP(this, &STradeWidget::TakeItem);
+
+	if (ActiveWidget)
+	{
+		TraderWidget->SetActive(true);
+		PlayerWidget->SetActive(false);
+	}
+
+
 
 
 	/*
@@ -185,6 +197,12 @@ void STradeWidget::TakeItem(FItem item)
 				//UseGold, plug that into Add Gold, then remove/Add items to respective inventory
 				TraderInventory->AddGold(PlayerInventory->UseGold(item.Value));
 				TraderInventory->RemoveItemFromInventory(item);
+				if (item.Quantity > 1)
+				{
+					//handle what happens 
+					//should instead be telling inventory "im taking X ammount" and then it returns Y ammount, how ammo is working already
+					item.Quantity = 1;
+				}
 				PlayerInventory->AddItemToInventory(item);
 			
 			}
@@ -197,6 +215,12 @@ void STradeWidget::TakeItem(FItem item)
 		else
 		{
 			TraderInventory->RemoveItemFromInventory(item);
+			if (item.Quantity > 1)
+			{
+				//handle what happens 
+				//should instead be telling inventory "im taking X ammount" and then it returns Y ammount, how ammo is working already
+				item.Quantity = 1;
+			}
 			PlayerInventory->AddItemToInventory(item);
 		}
 	}
@@ -282,24 +306,28 @@ void STradeWidget::GiveItem(FItem item)
 
 void STradeWidget::BuildAndShowMenu()
 {
+	PlayerWidget->BuildAndShowMenu();
+	TraderWidget->BuildAndShowMenu();
 
-	if (PlayerWidget.IsValid())
+	if (PlayerWidget.IsValid() && TraderWidget.IsValid())
 	{
-		PlayerWidget->BuildAndShowMenu();
+		if (ActiveWidget)
+		{
+			TraderWidget->SetActive(true);
+			PlayerWidget->SetActive(false);
+		}
+		else
+		{
+			TraderWidget->SetActive(false);
+			PlayerWidget->SetActive(true);
+		}
+
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "PlayerWidget Not Valid!");
-	}
-	if (TraderWidget.IsValid())
-	{
-		TraderWidget->BuildAndShowMenu();
-		GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "Just Ran the TraderWIdget->BuildMenu so...it better be up!");
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(0, 3, FColor::Red, "TraderWidget Not Valid!");
-	}
+	
+
+
+
+
 	/*
 	if (InventoryOwner && InventoryBox.IsValid())
 	{
@@ -394,8 +422,8 @@ FReply STradeWidget::OnFocusReceived(const FGeometry& MyGeometry, const FFocusEv
 {
 	//return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this), EFocusCause::SetDirectly, true);
 	//return FReply::Handled().ReleaseMouseCapture().CaptureJoystick(SharedThis(this), true);
-	return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this));
-
+	//return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this));
+	return FReply::Handled();
 }
 
 FReply STradeWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
@@ -405,12 +433,101 @@ FReply STradeWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InK
 	//bool bEventUserCanInteract = GetOwnerUserIndex() == -1 || UserIndex == GetOwnerUserIndex();
 
 	//if (!bControlsLocked && bEventUserCanInteract)
-	if(true)
+	if (PC->IsGameMenuUp())
 	{
 		const FKey Key = InKeyEvent.GetKey();
-		if ((Key == ControllerHideMenuKey || Key == EKeys::One || Key == EKeys::Global_Play || Key == EKeys::Global_Menu) && !InKeyEvent.IsRepeat())
+		
+		//B button, and also start menu button - only gamepad bindings + the key '1'
+		if ((Key == EKeys::Gamepad_FaceButton_Right || Key == ControllerHideMenuKey || Key == EKeys::One || Key == EKeys::Global_Play || Key == EKeys::Global_Menu) && !InKeyEvent.IsRepeat())
 		{
 			OnToggleMenu.ExecuteIfBound();
+			Result = FReply::Handled();
+		}
+
+		//-------------------------------------------------------------------------------
+		//A Button, select
+		else if (Key == EKeys::Gamepad_FaceButton_Bottom && !InKeyEvent.IsRepeat())
+		{
+			if (ActiveWidget)
+			{
+				//Selecting FROM trademenu
+				TraderWidget->ClickSelectedIndex();
+			}
+			else
+			{
+				PlayerWidget->ClickSelectedIndex();
+			}
+			Result = FReply::Handled();
+		}
+
+
+
+
+		//-------------------------------------------------------------------------------
+		//Directions Up/Down, analog stick is possibly repeating
+		else if (Key == EKeys::Gamepad_DPad_Up && !InKeyEvent.IsRepeat())
+		{
+			if (ActiveWidget)
+			{
+				//Tradermenu active
+				TraderWidget->DecrementIndex();
+			}
+			else
+			{
+				//Player menu active
+				PlayerWidget->DecrementIndex();
+			}
+			Result = FReply::Handled();
+		}
+
+		else if (Key == EKeys::Gamepad_DPad_Down && !InKeyEvent.IsRepeat())
+		{
+			if (ActiveWidget)
+			{
+				//Tradermenu active
+				TraderWidget->IncrementIndex();
+			}
+			else
+			{
+				//Player menu active
+				PlayerWidget->IncrementIndex();
+			}
+			Result = FReply::Handled();
+
+		}
+
+		else if (Key == EKeys::Gamepad_LeftStick_Down)
+		{
+			if (ActiveWidget)
+			{
+				//Tradermenu active
+				TraderWidget->IncrementIndex();
+			}
+			else
+			{
+				//Player menu active
+				PlayerWidget->IncrementIndex();
+			}
+			Result = FReply::Handled();
+		}
+		else if (Key == EKeys::Gamepad_LeftStick_Up)
+		{
+			if (ActiveWidget)
+			{
+				//Tradermenu active
+				TraderWidget->DecrementIndex();
+			}
+			else
+			{
+				//Player menu active
+				PlayerWidget->DecrementIndex();
+			}
+			Result = FReply::Handled();
+		}
+		else if (Key == EKeys::Gamepad_Special_Left)
+		{
+			ActiveWidget = !ActiveWidget;
+			BuildAndShowMenu();
 			Result = FReply::Handled();
 		}
 	}

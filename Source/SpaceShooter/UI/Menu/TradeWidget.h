@@ -13,14 +13,21 @@ public:
 	SLATE_BEGIN_ARGS(STradeWidget)
 	{}
 	SLATE_ARGUMENT(AActor* , InventoryOwner)
+	SLATE_ARGUMENT(APlayerCharacterController*, PC)
+
 	SLATE_ARGUMENT(AActor*, Trader)
 	SLATE_END_ARGS()
  
     void Construct(const FArguments& args);
 	
 	//-----------------------------------------------------
-	//INventory
+	//Inventory
 	//-----------------------------------------------------
+
+	bool ActiveWidget; //True = trader, false = player, prob not the best way for doing this, but i mean, its always gonna be two widgets, players, and other
+
+
+	APlayerCharacterController* PC;
 	AActor* InventoryOwner;
 	AActor* Trader;
 	TSharedPtr<class SInventoryWidget> PlayerWidget;

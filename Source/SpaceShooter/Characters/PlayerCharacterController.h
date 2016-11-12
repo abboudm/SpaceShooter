@@ -14,6 +14,26 @@ class APlayerCharacterController : public APlayerController
 public:
 
 	void ConstructAndShowTradeMenu(AActor* other);
+	void ConstructDialogueMenu(AActor* other);
+	
+	
+	//--------------------------------------
+	//TyperWriter
+	int TypeWriterIndex;
+	float TypeWriterSpeed;
+	FString ResponseString;
+	FString *DisplayString;
+
+
+	FTimerHandle TypeWriterHandle;
+	
+	//TSharedPtr<class SDialogueWidget> DialogueWidget;
+	//SDialogueWidget* DialogueWidget;
+	void TypeWriter(FString finalstring, FString& displaystring, float delaytime);
+	void Typer();
+	void UpdateDelayTime(float updatedtime);
+
+	//--------------------------------------
 
 	void OnToggleInGameMenu();
 	bool IsGameMenuUp();
@@ -34,6 +54,7 @@ private:
 	bool bGameMenuUp;
 	TSharedPtr<class FIngameMenu> IngameMenu;
 	TSharedPtr<class FTradeMenu> TradeMenu;
+	TSharedPtr<class FDialogueMenu> DialogueMenu;
 
 	/** Handle for efficient management of ClientStartOnlineGame timer */
 	//imerHandle TimerHandle_ClientStartOnlineGame;

@@ -29,15 +29,11 @@ AWeapon::AWeapon(const class FObjectInitializer& PCIP) : Super(PCIP)
 
 	DefaultMesh = DefualtMeshOb.Object;
 
-	SelfItem.WeaponType = WeaponType;
-	SelfItem.AmmoType = AmmoType;
-	//SelfItem.AmmoInClip = CurrentAmmoInClip;
-	SelfItem.ClipSize = MaxAmmoPerClip;
-	SelfItem.bBurst = bBurst;
-	SelfItem.bFullAuto = bFullAuto;
-	SelfItem.ShotsPerMinute = ShotsPerMinute;
-	SelfItem.BurstDelay = BurstDelay;
-	SelfItem.BurstSize = BurstSize;
+	//SelfItem.bBurst = bBurst;
+	//SelfItem.bFullAuto = bFullAuto;
+	//SelfItem.ShotsPerMinute = ShotsPerMinute;
+	//SelfItem.BurstDelay = BurstDelay;
+	//SelfItem.BurstSize = BurstSize;
 
 	PrimaryActorTick.bCanEverTick = true;
 	SetActorTickEnabled(true);
@@ -50,6 +46,7 @@ void AWeapon::UpdateItem(FItem item)
 	SelfItem.WeaponType = WeaponType;
 	SelfItem.AmmoType	= AmmoType ;
 	SelfItem.ItemType = ItemType;
+	SelfItem.ClipSize = MaxAmmoPerClip;
 	//CurrentAmmoInClip = SelfItem.AmmoInClip;
 	if (SelfItem.ClipSize != 0){MaxAmmoPerClip = SelfItem.ClipSize;}
 	//ShotsPerMinute = SelfItem.ShotsPerMinute;
@@ -64,11 +61,13 @@ FItem AWeapon::GetItem()
 	SelfItem.AmmoType = AmmoType;
 	//SelfItem.AmmoInClip = CurrentAmmoInClip;
 	SelfItem.ClipSize = MaxAmmoPerClip;
+	/*
 	SelfItem.bBurst = bBurst;
 	SelfItem.bFullAuto = bFullAuto;
 	SelfItem.ShotsPerMinute = ShotsPerMinute;
 	SelfItem.BurstDelay = BurstDelay;
 	SelfItem.BurstSize = BurstSize;
+	*/
 
 	//SelfItem.EquipableClass = this->GetClass();
 	return SelfItem;
@@ -180,7 +179,7 @@ void AWeapon::OnUnEquip()
 	{
 		StopWeaponAnimation(EquipAnim);
 		bPendingEquip = false;
-
+		
 		GetWorldTimerManager().ClearTimer(EquipFinishedTimerHandle);
 	}
 	if (bPendingReload)
@@ -699,10 +698,14 @@ void AWeapon::OnTriggerUp()
 }
 
 
-
-int32 AWeapon::GetCurrentAmmo() const{
+int32 AWeapon::GetCurrentAmmo() const {
 
 	return PawnOwner->GetAmmo(SelfItem.AmmoType);
+}
+
+int32 AWeapon::GetCurrentAmmoInClip() const{
+
+	return SelfItem.AmmoInClip;
 }
 int32 AWeapon::GiveAmmo(int32 AddAmount)
 {
@@ -742,12 +745,6 @@ void AWeapon::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "tickidytickdiytickctickdicdjicj");
-	WeaponTick(DeltaSeconds);
-}
-
-void AWeapon::WeaponTick_Implementation(float DeltaSeconds)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "weapontick c++");
 }
 
 void AWeapon::TriggerReload(){	if (CanReload()){	StartReload();	}	}

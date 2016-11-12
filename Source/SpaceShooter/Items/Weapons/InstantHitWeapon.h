@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType, Abstract)
 class SPACESHOOTER_API AInstantHitWeapon : public AWeapon
 {
 	GENERATED_BODY()
@@ -58,7 +58,9 @@ class SPACESHOOTER_API AInstantHitWeapon : public AWeapon
 
 	/* Keeps track of number of shots fired */
 	//int32 BulletsShotCount;
-
+public:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 protected:
 
 	AInstantHitWeapon(const FObjectInitializer& ObjectInitializer);

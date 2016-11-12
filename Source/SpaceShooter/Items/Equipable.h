@@ -25,7 +25,7 @@ enum class EItemType : uint8
 */
 
 
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable,BlueprintType, Abstract)
 class SPACESHOOTER_API AEquipable : public AActor
 {
 	GENERATED_BODY()
@@ -42,6 +42,7 @@ protected:
 
 	/** The main skeletal mesh associated with this Character (optional sub-object). */
 	//UPROPERTY(VisibleDefaultsOnly, Cateory = Mesh)
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class USkeletalMeshComponent* Mesh;
 
@@ -59,7 +60,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaSeconds) override;
 	
-
+	void SetupSelfItem();
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
@@ -96,7 +97,7 @@ public:
 	//TSubclassOf<class AEquipablePickup> LootCompanion; //this is the Item->Loot class that would drop from the final product class aka BattleRifle_instanthit <-> BattleRifle_loot
 
 	
-	
+
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnPrimaryTrigger"))
 		void ReceiveOnPrimaryTrigger();
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnPrimaryTrigger"))
@@ -121,8 +122,11 @@ public:
 	//Self Item is the item thats created / sent out
 	//Some Equipables will fill out Self Item in construction and just return it on getitem
 	//weapons with clip sizes then might only fill out half, with the rest during the getitem function
+	UPROPERTY()
 	FItem SelfItem;
+	UFUNCTION(BlueprintCallable, Category = "Item")
 	virtual FItem GetItem();
+	FItem SafeGetItem();
 	virtual void UpdateItem(FItem item);
 
 

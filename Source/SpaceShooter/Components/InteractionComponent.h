@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "DialogueSystem/Branch.h"
 #include "InteractionComponent.generated.h"
 
 
@@ -41,12 +42,14 @@ class SPACESHOOTER_API UInteractionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+	//-----------------------------------------------------------------------------------------------
 	// Sets default values for this component's properties
 	UInteractionComponent();
 
 	UPROPERTY(EditDefaultsOnly)
 	EInteractionType InteractionType;
 
+	//-----------------------------------------------------------------------------------------------
 	//Button Channel to broadcast
 	UPROPERTY(EditDefaultsOnly, Category = Button)
 		int BroadcastChannel;
@@ -54,11 +57,22 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Button)
 		EButtonDamageHandle DamageHandleType;
 
-
+	//-----------------------------------------------------------------------------------------------
 	//Dialogue
-	TArray<UObject> Dialogue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Branch")
+		TArray<TSubclassOf<class UBranch>> BranchClasses;
 
-	void SetupAction();
+
+	UPROPERTY(BlueprintReadOnly, Category = "Branch")
+		TArray<UBranch* > Branchs;
+
+	/*
+	*/
+
+
+
+
+	void ConstructDialogueBranchs();
 	void Action();
 	EInteractionType GetInteractionType();
 

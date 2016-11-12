@@ -19,6 +19,7 @@ AEquipable::AEquipable(const class FObjectInitializer& PCIP) : Super(PCIP)
 	Weight = 1.0;
 	ItemType = EItemType::Equipable;
 
+	
 	//Mesh = CreateOptionalDefaultSubobject<USkeletalMeshComponent>("EquipableMesh0");
 	Mesh = PCIP.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("EquipableMesh0"));
 	if (Mesh)
@@ -70,13 +71,36 @@ AEquipable::AEquipable(const class FObjectInitializer& PCIP) : Super(PCIP)
 void AEquipable::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Lib::Msg("TICKITY IN THE EQUIPPY!"); 
+
 }
 
 void AEquipable::UpdateItem(FItem item)
 {
 	SelfItem = item;
 	SelfItem.ItemType = ItemType;
+}
+
+void AEquipable::SetupSelfItem()
+{
+	SelfItem.Name = Name;
+	SelfItem.Description = Description;
+	SelfItem.Value = Value;
+	SelfItem.Weight = Weight;
+	SelfItem.ItemType = ItemType;
+	if (LootClass)
+	{
+		SelfItem.LootClass = FStringClassReference::GetOrCreateIDForClass(LootClass->GetClass());
+	}
+
+	SelfItem.EquipableClass = FStringClassReference::GetOrCreateIDForClass(this->GetClass());
+
+
+}
+
+FItem AEquipable::SafeGetItem()
+{
+	SetupSelfItem();
+	return SelfItem;
 }
 
 FItem AEquipable::GetItem()
@@ -91,13 +115,13 @@ void AEquipable::PostInitializeComponents()
 	SelfItem.Value = Value;
 	SelfItem.Weight = Weight;
 	SelfItem.ItemType = ItemType;
-	
 	if (LootClass)
 	{
 		SelfItem.LootClass = FStringClassReference::GetOrCreateIDForClass(LootClass->GetClass());
 	}
 
 	SelfItem.EquipableClass = FStringClassReference::GetOrCreateIDForClass(this->GetClass());
+
 	//TimeBetweenShots = 60.0f / ShotsPerMinute;
 	//CurrentAmmo = FMath::Min(StartAmmo, MaxAmmo);
 	//CurrentAmmoInClip = FMath::Min(MaxAmmoPerClip, StartAmmo);
@@ -119,7 +143,9 @@ void AEquipable::OnRep_MyPawn()
 
 
 void AEquipable::BeginPlay()
-{}
+{
+	Super::BeginPlay();
+}
 
 void AEquipable::OnEquip(bool bPlayAnimation){bIsEquipped = true;}
 void AEquipable::OnUnEquip(){bIsEquipped = false;}

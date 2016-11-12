@@ -16,11 +16,18 @@
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SInventoryWidget::Construct(const FArguments& args)
 {
+	SelectedIndex = -1;
+	CurrentIndex = -1;
+
+	PC = args._PC;
 	InventoryOwner = args._InventoryOwner;
 	inv = InventoryOwner->FindComponentByClass<class UInventoryComponent>();
 	Category = EInventoryCategory::All;
 	SortType = EItemSortType::Name;
 	
+
+
+	SetActive(true);
 	//Inventory = args._Inventory;
 	ControllerHideMenuKey = EKeys::Gamepad_Special_Right;
 	MenuStyle = &FMenuStyles::Get().GetWidgetStyle<FGlobalStyle>("Global");
@@ -74,6 +81,8 @@ void SInventoryWidget::Construct(const FArguments& args)
 					.ButtonStyle(&MenuStyle->TabButtonStyle)
 					.Text(FText::FromString("All"))
 					.OnClicked(this, &SInventoryWidget::ShowAllClicked)
+	
+				  
 				]
 				+ SHorizontalBox::Slot()
 				[
@@ -170,6 +179,56 @@ void SInventoryWidget::Construct(const FArguments& args)
  
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+
+
+
+void SInventoryWidget::UpdateHighlighted()
+{
+
+	if ((CurrentIndex != SelectedIndex) && (ItemButtonList.Num() > 0) && IsActive())
+	{
+		if (!ItemButtonList.IsValidIndex(CurrentIndex))
+		{
+			CurrentIndex = 0;
+			SelectedIndex = CurrentIndex;
+		}
+		//ItemButtonList.GetData()[CurrentIndex]->button
+		ItemButtonList.GetData()[CurrentIndex]->Button->SetButtonStyle(&MenuStyle->MenuButtonStyle);
+
+
+		if (ItemButtonList.IsValidIndex(SelectedIndex))
+		{
+			CurrentIndex = SelectedIndex;
+		}
+		else
+		{
+			SelectedIndex = CurrentIndex;
+		}
+
+		ItemButtonList.GetData()[CurrentIndex]->Button->SetButtonStyle(&MenuStyle->SelectedMenuButtonStyle);
+	}
+	else if (CurrentIndex == SelectedIndex && ItemButtonList.IsValidIndex(CurrentIndex) && IsActive())
+	{
+		ItemButtonList.GetData()[CurrentIndex]->Button->SetButtonStyle(&MenuStyle->SelectedMenuButtonStyle);
+	}
+	else if (ItemButtonList.IsValidIndex(CurrentIndex) && !IsActive())
+	{
+		ItemButtonList.GetData()[CurrentIndex]->Button->SetButtonStyle(&MenuStyle->MenuButtonStyle);
+	}
+	else
+	{
+		//GEngine->AddOnScreenDebugMessage(-1,3,FColor::Red,"Else inside the highlight item function!!");
+	}
+}
+
+
+
+
+
+
+
+
 FReply SInventoryWidget::ToggleMenuClicked()
 {
 	OnToggleMenu.ExecuteIfBound();
@@ -227,7 +286,7 @@ void SInventoryWidget::UseItem(FItem item)
 				}
 				break;
 			default:
-				GEngine->AddOnScreenDebugMessage(1, 3, FColor::Red, "Trying to use an item that isnt equipable or loot!!!");
+				//GEngine->AddOnScreenDebugMessage(1, 3, FColor::Red, "Trying to use an item that isnt equipable or loot!!!");
 				break;
 			}
 		}
@@ -504,30 +563,21 @@ void SInventoryWidget::BuildAndShowMenu()
 {
 	if (InventoryOwner && InventoryBox.IsValid())
 	{
-
+		
 		
 		if (inv)
 		{
-				Inventory = inv->GetInventory();
-				SortInventory(SortType);
-			//UInventoryComponent* inv = InventoryOwner->GetComponentByClass(UInventoryComponent)
-			//Inventory = InventoryOwner->GetInventory();
-		
-
-			/*
-			Inventory.Sort([](const FItem& Lhs, const FItem& Rhs) -> bool 
-			{
-				if (Lhs.Value < Rhs.Value) return true;
-				if (Lhs.Value > Rhs.Value) return false;
-
-			});
-			*/
-
-
-
-
+			//--------------------------------------------------------------
+			//Initialize containers
+			Inventory = inv->GetInventory();
+			SortInventory(SortType);
+			//Clear the button list
+			ItemButtonList.Empty();
+			//clear the actual button widgets && header widget
 			InventoryBox->ClearChildren();
 			
+			//---------------------------------------------------------------
+			//Construct Header
 			TSharedPtr<class SItemHeaderWidget> Header;
 			InventoryBox->AddSlot()
 				[
@@ -536,13 +586,16 @@ void SInventoryWidget::BuildAndShowMenu()
 				];
 			Header->OnSort.BindSP(this, &SInventoryWidget::SortInventory);
 			Header->OnRebuildParent.BindSP(this, &SInventoryWidget::BuildAndShowMenu);
+			
+			//---------------------------------------------------------------
+			//Construct Buttons Items
 			for (int i = 0; i < Inventory.Num(); i++)
 			{
 				TSharedPtr<class SItemWidget> ItemButton;
 				switch (Category)
 				{
 				case EInventoryCategory::All:
-					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "All Category Button Making!");
+					//GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "All Category Button Making!");
 					InventoryBox->AddSlot()
 						[
 							SAssignNew(ItemButton, SItemWidget)
@@ -550,9 +603,10 @@ void SInventoryWidget::BuildAndShowMenu()
 							.Category(Category)
 						];
 					ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+					ItemButtonList.Add(ItemButton);
 					break;
 				case EInventoryCategory::Weapons:
-					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Weapons Category Button Making!");
+					//GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Weapons Category Button Making!");
 					if (!(Inventory.GetData()[i].ItemType == EItemType::Loot))
 					{
 						InventoryBox->AddSlot()
@@ -562,11 +616,12 @@ void SInventoryWidget::BuildAndShowMenu()
 								.Category(Category)
 							];
 						ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+						ItemButtonList.Add(ItemButton);
 					}
 					
 					break;
 				case EInventoryCategory::Loot:
-					GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Loot Category Button Making!");
+					//GEngine->AddOnScreenDebugMessage(0, 1, FColor::Yellow, "Loot Category Button Making!");
 					if (!(Inventory.GetData()[i].ItemType == EItemType::Equipable))
 					{
 						InventoryBox->AddSlot()
@@ -576,13 +631,55 @@ void SInventoryWidget::BuildAndShowMenu()
 								.Category(Category)
 							];
 						ItemButton->UseItem.BindSP(this, &SInventoryWidget::UseItem);
+						ItemButtonList.Add(ItemButton);
 					}
 					break;
 				default:
 					break;
 				}
 
+
+				if (i == CurrentIndex && ItemButtonList.IsValidIndex(CurrentIndex) && IsActive())
+				{
+					ItemButtonList.GetData()[CurrentIndex]->Button->SetButtonStyle(&MenuStyle->MenuButtonStyle);
+				}
+
 			}
+		
+			//---------------------------------------------------------------
+			//Update the current index
+
+			
+			if ((CurrentIndex == -1 || SelectedIndex == -1) && ItemButtonList.Num() > 0)
+			{
+				CurrentIndex = 0;
+				SelectedIndex = CurrentIndex;
+			}
+			else if (ItemButtonList.Num() > 0)
+			{
+				if (CurrentIndex >= ItemButtonList.Num())
+				{
+					CurrentIndex = ItemButtonList.Num() - 1;
+				}
+				else if (ItemButtonList.IsValidIndex(CurrentIndex))
+				{
+					SelectedIndex = CurrentIndex;
+				}
+				else
+				{
+					CurrentIndex = 0;
+					SelectedIndex = CurrentIndex;
+				}
+			}
+			else
+			{
+				CurrentIndex = -1;
+				SelectedIndex = CurrentIndex;
+			}
+
+			UpdateHighlighted();
+
+
 		}
 	}
 
@@ -628,9 +725,56 @@ FReply SInventoryWidget::OnFocusReceived(const FGeometry& MyGeometry, const FFoc
 {
 	//return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this), EFocusCause::SetDirectly, true);
 	//return FReply::Handled().ReleaseMouseCapture().CaptureJoystick(SharedThis(this), true);
-	return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this));
+	//return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this));
+	return FReply::Handled();
+}
+
+
+
+void SInventoryWidget::ClickSelectedIndex()
+{
+	if (ItemButtonList.IsValidIndex(CurrentIndex))
+	{
+		ItemButtonList.GetData()[CurrentIndex]->ItemClicked();
+	}
+	UpdateHighlighted();
 
 }
+
+
+void SInventoryWidget::IncrementIndex()
+{
+	if (!(SelectedIndex >= ItemButtonList.Num()))
+	{
+		SelectedIndex++;
+	}
+	UpdateHighlighted();
+
+
+}
+
+void SInventoryWidget::DecrementIndex()
+{
+	if (!(SelectedIndex < 0))
+	{
+		SelectedIndex--;
+	}
+	UpdateHighlighted();
+
+}
+
+
+
+bool SInventoryWidget::IsActive() const
+{
+	return bIsActive;
+}
+void SInventoryWidget::SetActive(bool isactive)
+{
+	bIsActive = isactive;
+	BuildAndShowMenu();//maybe useless/not good to call here?
+}
+
 
 FReply SInventoryWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
@@ -639,14 +783,151 @@ FReply SInventoryWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent&
 	//bool bEventUserCanInteract = GetOwnerUserIndex() == -1 || UserIndex == GetOwnerUserIndex();
 
 	//if (!bControlsLocked && bEventUserCanInteract)
-	if(true)
+	//if(true)
+	if(PC->IsGameMenuUp())
 	{
 		const FKey Key = InKeyEvent.GetKey();
+		
+		//Main Pause Menu Close
 		if ((Key == ControllerHideMenuKey || Key == EKeys::One || Key == EKeys::Global_Play || Key == EKeys::Global_Menu) && !InKeyEvent.IsRepeat())
 		{
 			OnToggleMenu.ExecuteIfBound();
 			Result = FReply::Handled();
 		}
+		
+
+
+
+		//-------------------------------------------------------------------------------
+		//Buttons
+		//B Button, back
+		else if (Key == EKeys::Gamepad_FaceButton_Right && !InKeyEvent.IsRepeat())
+		{
+			OnToggleMenu.ExecuteIfBound();
+			Result = FReply::Handled();
+		}
+		//A Button, select
+		else if (Key == EKeys::Gamepad_FaceButton_Bottom && !InKeyEvent.IsRepeat())
+		{
+			ClickSelectedIndex();
+			Result = FReply::Handled();
+		}
+
+
+
+
+		//-------------------------------------------------------------------------------
+		//Directions Up/Down, analog stick is possibly repeating
+		else if (Key == EKeys::Gamepad_DPad_Up && !InKeyEvent.IsRepeat())
+		{
+			DecrementIndex();
+			Result = FReply::Handled();
+		}
+
+		else if (Key == EKeys::Gamepad_DPad_Down && !InKeyEvent.IsRepeat())
+		{
+			
+			IncrementIndex();
+			Result = FReply::Handled();
+
+		}
+		
+		else if (Key == EKeys::Gamepad_LeftStick_Down)
+		{
+			IncrementIndex();
+			Result = FReply::Handled();
+		}
+		else if (Key == EKeys::Gamepad_LeftStick_Up)
+		{
+			DecrementIndex();
+			Result = FReply::Handled();
+		}
+
+
+
+		else if (Key == EKeys::Gamepad_LeftStick_Left && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftStick_Right && !InKeyEvent.IsRepeat())
+		{
+		}
+
+
+		else if (Key == EKeys::Gamepad_DPad_Left && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_DPad_Right && !InKeyEvent.IsRepeat())
+		{
+		}
+
+		else if (Key == EKeys::Gamepad_FaceButton_Top && !InKeyEvent.IsRepeat())
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Yellow, "Y Button Pressed inside the inventory!!");
+		}
+		else if (Key == EKeys::Gamepad_FaceButton_Left && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftShoulder && !InKeyEvent.IsRepeat())
+		{
+		}
+		
+		
+		
+		
+		
+		else if (Key == EKeys::Gamepad_LeftThumbstick && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftTrigger && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftTriggerAxis && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftX && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_LeftY && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightShoulder && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightStick_Down && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightStick_Left && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightStick_Right && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightStick_Up && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightThumbstick && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightTrigger)
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightTriggerAxis)
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightX && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_RightY && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_Special_Left && !InKeyEvent.IsRepeat())
+		{
+		}
+		else if (Key == EKeys::Gamepad_Special_Right && !InKeyEvent.IsRepeat())
+		{
+		}
+
+	
 		/*
 		if (Key == EKeys::Up || Key == EKeys::Gamepad_DPad_Up || Key == EKeys::Gamepad_LeftStick_Up)
 		{

@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType, Abstract)
 class SPACESHOOTER_API AProjectileWeapon : public AWeapon
 {
 	GENERATED_BODY()
@@ -40,5 +40,6 @@ protected:
 		TSubclassOf<class AProjectile> Projectile;
 public:
 	virtual void UpdateItem(FItem item) override;
-	
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };

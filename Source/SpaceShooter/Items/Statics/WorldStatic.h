@@ -8,7 +8,7 @@
 
 
 
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable,BlueprintType, Abstract)
 class SPACESHOOTER_API AWorldStatic : public AActor
 {
 	GENERATED_BODY()
@@ -39,7 +39,7 @@ protected:
 	UStaticMeshComponent* GetMesh();
 
 	virtual void BeginPlay() override;
-	
+	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(
 		float DamageAmount,
 	struct FDamageEvent const & DamageEvent,

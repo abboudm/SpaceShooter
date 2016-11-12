@@ -13,6 +13,8 @@ public:
 	SLATE_BEGIN_ARGS(SInventoryWidget)
 	{}
 	SLATE_ARGUMENT(AActor* , InventoryOwner)
+	SLATE_ARGUMENT(APlayerCharacterController*, PC)
+
 	//SLATE_ARGUMENT(TArray<FItem>, Inventory)
 	//SLATE_ARGUMENT(AActor* , Owner)
 	SLATE_END_ARGS()
@@ -34,6 +36,13 @@ public:
 	TAttribute<FText> GoldAmmt;
 	FText GetGold() const;
 
+	bool bIsActive;
+	bool IsActive() const;
+	void SetActive(bool isactive);
+	void UpdateHighlighted();
+	void IncrementIndex();
+	void DecrementIndex();
+	void ClickSelectedIndex();
 
 
 	EInventoryCategory Category;
@@ -46,6 +55,14 @@ public:
 	void SortInventory(EItemSortType sorttype,bool inverse);
 
 
+
+
+	//-----------------------------------------------------
+	//Gamepad Selector
+	APlayerCharacterController* PC;
+	int SelectedIndex;
+	int CurrentIndex;
+	TArray<TSharedPtr<class SItemWidget>> ItemButtonList;
 
 
 

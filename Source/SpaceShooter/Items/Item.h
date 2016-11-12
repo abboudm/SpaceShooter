@@ -102,54 +102,60 @@ USTRUCT(BlueprintType)
 struct FItem
 {
 	GENERATED_USTRUCT_BODY()
-		int id;
 	//------------------------------------
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString id;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName Name;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString Description;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EItemType ItemType;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Quantity;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Value;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Weight;
 	//------------------------------------
-	UPROPERTY(EditDefaultsOnly)
+	//Base Item Data
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		//TSubclassOf<class AEquipable> EquipableClass;
 		FStringClassReference EquipableClass;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EEquipableType EquipType;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FStringClassReference LootClass;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ELootType LootType;
 	//------------------------------------
-	UPROPERTY(EditDefaultsOnly)
-		bool isEquipped;
-	UPROPERTY(EditDefaultsOnly)
-		EEquipableType EquipType;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	bool isEquipped;
+
+	//Following properties are item specific, so stuff like weapon data {ammo,damage,other ui required values}
 	//------------------------------------
-	UPROPERTY(EditDefaultsOnly)
+	//WeaponData
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EWeaponType WeaponType;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EAmmoType AmmoType;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int AmmoInClip;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ClipSize;
-	UPROPERTY(EditDefaultsOnly)
-		bool bBurst;
-	UPROPERTY(EditDefaultsOnly)
-		bool bFullAuto;
-	UPROPERTY(EditDefaultsOnly)
-		float ShotsPerMinute;
-	UPROPERTY(EditDefaultsOnly)
-		float BurstDelay;
-	UPROPERTY(EditDefaultsOnly)
-		float BurstSize;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float HitDamage;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	bool bBurst;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	bool bFullAuto;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	float ShotsPerMinute;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	float BurstDelay;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	float BurstSize;
 	//default item struct constructor
 	//methods to create item from an equip or lootable class
 

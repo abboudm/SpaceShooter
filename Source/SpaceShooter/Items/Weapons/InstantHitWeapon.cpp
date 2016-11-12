@@ -135,15 +135,17 @@ bool AInstantHitWeapon::ShouldDealDamage(AActor* TestActor) const
 	return false;
 }
 
-void AInstantHitWeapon::UpdateItem(FItem item)
+void AInstantHitWeapon::UpdateItem		(FItem item)
 {
+	/*
 	SelfItem = item;
 	SelfItem.WeaponType = WeaponType;
 	SelfItem.AmmoType = AmmoType;
 	SelfItem.ItemType = ItemType;
-	if (SelfItem.ClipSize != 0) { MaxAmmoPerClip = SelfItem.ClipSize; }
+	SelfItem.ClipSize = MaxAmmoPerClip;
+	*/
+	Super::UpdateItem(item);
 	SelfItem.HitDamage = HitDamage;
-
 }
 
 
@@ -248,7 +250,14 @@ void AInstantHitWeapon::SimulateInstantHit(const FVector& ImpactPoint)
 		SpawnTrailEffects(EndTrace);
 	}
 }
-
+void AInstantHitWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+}
+void AInstantHitWeapon::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
 
 bool AInstantHitWeapon::ServerNotifyHit_Validate(const FHitResult Impact, FVector_NetQuantizeNormal ShootDir)
 {

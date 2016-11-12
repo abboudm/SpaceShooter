@@ -2,7 +2,7 @@
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
-UCLASS(config=Game)
+UCLASS(config=Game, Blueprintable, BlueprintType, Abstract)
 class AProjectile : public AActor
 {
 	GENERATED_BODY()
@@ -18,6 +18,8 @@ class AProjectile : public AActor
 
 public:
 	AProjectile();
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	virtual void PostInitializeComponents() override;
 	/** called when projectile hits something */
 	UFUNCTION()
@@ -32,7 +34,6 @@ public:
 	//CanDamage
 	//Damage
 
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 		TSubclassOf<class UHDamageType> DamageType;
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
@@ -63,6 +64,7 @@ protected:
 		bool bExplosive;
 	
 
+protected:
 	void SpawnTrailEffects();
 	void Stick(UPrimitiveComponent* OtherComp);
 	void Detonate();

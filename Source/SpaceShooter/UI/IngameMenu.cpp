@@ -27,8 +27,11 @@ void FIngameMenu::Construct(APlayerCharacterController* _PC)
 
 		SAssignNew(GameMenuWidget, SInventoryWidget)
 			.InventoryOwner(Cast<AActor>(PC->GetPawn()))
+			.PC(PC)
+			.Cursor(EMouseCursor::None)
 			//.Inventory(Cast<ABaseTrainer>(PC->GetPawn())->GetInventory())
-			.Cursor(EMouseCursor::Default);
+			//.Cursor(EMouseCursor::Default)
+			;
 		/*
 		SAssignNew(GameMenuWidget, SGameMenuWidget)
 			//.PC(TWeakObjectPtr<ULocalPlayer>(PC))
@@ -58,7 +61,10 @@ void FIngameMenu::DetachGameMenu()
 			//PC->SetPause(false);
 			//PC->bShowMouseCursor = false;
 			PC->SetGameMenuUp(false);
-			UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
+			FInputModeGameOnly Mode;
+			PC->SetInputMode(Mode);
+			PC->bShowMouseCursor = false;
+			//UVirtualCursorFunctionLibrary::DisableVirtualCursor(PC);
 			FSlateApplication::Get().SetAllUserFocusToGameViewport();
 		}
 
@@ -112,7 +118,11 @@ void FIngameMenu::ToggleGameMenu()
 			//PC->SetPause(true);
 			//PC->bShowMouseCursor = true;
 			PC->SetGameMenuUp(true);
-			UVirtualCursorFunctionLibrary::EnableVirtualCursor(PC);
+			PC->bShowMouseCursor = false;
+			FInputModeUIOnly Mode;
+			Mode.SetWidgetToFocus(GameMenuWidget);
+			PC->SetInputMode(Mode);
+			//UVirtualCursorFunctionLibrary::EnableVirtualCursor(PC);
 		}
 		else
 		{
