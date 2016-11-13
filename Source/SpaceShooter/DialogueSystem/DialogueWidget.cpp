@@ -122,7 +122,7 @@ void SDialogueWidget::FillFromTopic(UTopic* topic)
 {
 	for (UTopic* Topic : topic->ChildrenTopics)
 	{
-		if (!Topic->bHello)
+		if (!Topic->bHello && Topic->IsActive())
 		{
 			CurrentTopicList.Add(Topic);
 		}
@@ -135,7 +135,7 @@ void SDialogueWidget::SpeakHelloTopic()
 	{
 		for (UTopic* Topic : Branch->Topics)
 		{
-			if (Topic->bHello)
+			if (Topic->bHello && Topic->IsActive())
 			{
 				CurrentTopic = Topic;
 				//this is where typewriter stuff would come into play
@@ -163,6 +163,7 @@ void SDialogueWidget::SpeakResponse()
 
 		PC->TypeWriter(ResponseString,ResponseDisplayString,TypeWriterSpeed);
 		CurrentTopic->StartScript();
+		CurrentTopic->bSpoken = true;
 	}
 
 }
@@ -174,7 +175,7 @@ void SDialogueWidget::FillRootTopics()
 	{
 		for (UTopic* Topic : Branch->Topics)
 		{
-			if (!Topic->bHello)
+			if (!Topic->bHello && Topic->IsActive())
 			{
 				CurrentTopicList.Add(Topic);
 			}
@@ -307,12 +308,17 @@ void SDialogueWidget::ClickSelectedIndex()
 	if (TopicListButtons.IsValidIndex(CurrentIndex) && CurrentTopicList.IsValidIndex(CurrentIndex))
 	{
 		//Enter Topic here!
-		//UTopic* temp = CurrentTopicList.GetData()[CurrentIndex];
-		CurrentTopic = CurrentTopicList.GetData()[CurrentIndex];
-		CurrentTopicList.Empty();
-		TopicListButtons.Empty();
-		TopicListBox->ClearChildren();
-		SpeakResponse();
+		UTopic* temp = CurrentTopicList.GetData()[CurrentIndex];
+		if (temp->IsActive())
+		{
+			CurrentTopic = temp;
+			CurrentTopic->StartScript();
+			//CurrentTopic = CurrentTopicList.GetData()[CurrentIndex];
+			CurrentTopicList.Empty();
+			TopicListButtons.Empty();
+			TopicListBox->ClearChildren();
+			SpeakResponse();
+		}
 
 		
 		//this is where typewriter stuff would come into play, also when getting the hello topic
@@ -381,6 +387,8 @@ void SDialogueWidget::UpdateState()
 	{
 		CurrentState = EDialogueState::FinishedSpeaking;
 		
+		CurrentTopic->StopScript();
+
 		if (CurrentTopic)
 		{
 
@@ -474,6 +482,7 @@ FReply SDialogueWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& 
 			
 			if (CurrentState == EDialogueState::Speaking)
 			{
+				PC->UpdateDelayTime(TypeWriterSpeed * 0.15);
 				//wait until response is finished, else speed up the typewriter!
 			}
 			else if (CurrentState == EDialogueState::FinishedSpeaking)

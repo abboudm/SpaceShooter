@@ -59,9 +59,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "Start Speaking Script"))
 		void StartScript();
 
-	FORCEINLINE void StartScript_Implementation() {  }
+	FORCEINLINE void StartScript_Implementation() { }
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "Start Speaking Script"))
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "Stop Speaking Script"))
 		void StopScript();
 
 	FORCEINLINE void StopScript_Implementation() {  }
