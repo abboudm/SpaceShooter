@@ -68,6 +68,7 @@ public:
 	
 	float TypeWriterSpeed;
 	void SpeakResponse();
+	void FinishSpeaking();
 	int TypeWriterIndex;
 
 	void SpeakHelloTopic();

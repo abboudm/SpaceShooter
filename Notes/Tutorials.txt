@@ -70,7 +70,6 @@ https://github.com/Deema35/Climbing-Movement-Component
 
 https://github.com/artemavrin/UE4-DialogueSystem
 		this is the github i copied the DialogueSystem folder from. again, another good example to look around, but were not gonna do this kind of implementation
-		actually, thats a TODO, which is delete our DialogueSystem folder & code
 
 https://forums.unrealengine.com/showthread.php?80021-Free-Community-Assets
 		FREE ASSETS - i got the pistol/some gun meshes from here
@@ -90,4 +89,4 @@ Havnt checked these out really, just bookmarked em. Might be useful
 
 https://forums.unrealengine.com/showthread.php?108618-Ratchet-and-Clank-Guns-Mechanics-and-Gadgets
 
-https://forums.unrealengine.com/showthread.php?114087-The-Construc-s-Material-Functions-Blo://forums.unrealengine.com/showthread.php?114087-The-Construc-s-Material-Functions-Blog
+https://forums.unrealengine.com/showthread.php?114087-The-Construc-s-Material-Functions-Blog

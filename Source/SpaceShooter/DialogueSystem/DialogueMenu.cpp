@@ -8,7 +8,11 @@
 
 void FDialogueMenu::UpdateDialogueState()
 {
-	GameMenuWidget->UpdateState();
+	if (GameMenuWidget.IsValid())
+	{
+		GameMenuWidget->UpdateState();
+
+	}
 }
 
 void FDialogueMenu::Construct(APlayerCharacterController* _PC, AActor* _Other)

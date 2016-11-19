@@ -49,6 +49,49 @@ public:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 	//------------------------------------------------------------------------
+	//Settings - player config stuff 
+	//------------------------------------------------------------------------
+private:
+	float PitchVel;
+	float YawVel;
+	float LastPitchVel;
+	float LastYawVel;
+
+	FVector2D GamepadCamera;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Camera Sensitivity", meta = (
+		XAxisName = "InputStrength",
+		YAxisName = "Acceleration"))
+		FRuntimeFloatCurve InputAccelerationCurve;
+
+
+
+	UPROPERTY(EditAnywhere, Category = "Camera Sensitivity", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+		float LookAcceleration;
+	UPROPERTY(EditAnywhere, Category = "Camera Sensitivity", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+		float InnerDeadZone;
+	UPROPERTY(EditAnywhere, Category = "Camera Sensitivity", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+		float OuterDeadZone;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float LookXSensitivity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float LookYSensitivity;
+
+	/*
+	UPROPERTY(EditAnywhere, Category = "Gamepad Right Stick", meta = (ClampMin = "1.0"))
+		float AnalogCursorAccelerationMultiplier;
+	UPROPERTY(EditAnywhere, Category = "Gamepad Right Stick")
+		bool bAnalogCursorNoAcceleration;
+	*/
+
+	//FVector2D GetStickAccelerationValue(const FVector2D& AnalogValues, float sensitivity);
+
+
+
+	//------------------------------------------------------------------------
 	//PLAYER SPECIC
 	//------------------------------------------------------------------------
 	
@@ -61,12 +104,7 @@ public:
 	void CameraYaw(float AxisValue);
 	void GamePadPitch(float AxisValue);
 	void GamePadYaw(float AxisValue);
-	/*Gamepad Right Thumbstick Sensitivity*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float LookXSensitivity;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float LookYSensitivity;
-
+	
 	//A Button		
 	virtual void Jump();
 	virtual void StopJumping();	

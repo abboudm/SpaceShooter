@@ -1,5 +1,6 @@
 #pragma once
 #include "Runtime/CoreUObject/Public/UObject/UObject.h"
+#include "DialogueSystem/TopicInfo.h"
 #include "Topic.generated.h"
 
 
@@ -75,20 +76,38 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Topic")
 		TArray<UTopic* > ChildrenTopics;
-	
+	UPROPERTY(BlueprintReadOnly, Category = "Topic")
+		TArray<UTopicInfo* > Infos;
+
+
 	UPROPERTY(BlueprintReadWrite, Category = "Topic")
 		bool bSpoken;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Topic")
 		bool bHello; //mark if its a hello topic...should this be in info instead?
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Topic")
 		bool bGoodByeAfterScript;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Topic")
+		bool bAutoConfirm;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Topic")
+		bool bOverrideTypeWriterSpeed;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Topic")
+		float TypeWriterSpeed;
 	
+
+
+	UFUNCTION(BlueprintCallable, Category = "Topic")
+		FString GetTopicText();
+	UFUNCTION(BlueprintCallable, Category = "Topic")
+		FString GetTopicResponse();
+
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Topic")
 		//TArray<UTopicInfo* > TopicInfos;
 
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Topic", meta = (AllowPrivateAccess = "true"))
 		TArray<TSubclassOf<class UTopic>> ChildrenTopicClasses;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Topic", meta = (AllowPrivateAccess = "true"))
+		TArray<TSubclassOf<class UTopicInfo>> InfoClasses;
 
 private:
 

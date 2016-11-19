@@ -9,14 +9,6 @@
 
 
 
-USTRUCT(BlueprintType)
-struct FResponse
-{
-	GENERATED_USTRUCT_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString Response;
-	
-};
 
 UENUM(BlueprintType)
 enum class EBranchType : uint8

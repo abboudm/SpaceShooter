@@ -40,6 +40,57 @@ void SDialogueWidget::Construct(const FArguments& args)
 
 	FVector2D ScreenResolution;
 	GEngine->GameViewport->GetViewportSize(ScreenResolution);
+	
+
+	FVector2D WidgetSize = FVector2D(1500, 500);
+	FVector2D WidgetPos = FVector2D(350,500);
+
+
+	ChildSlot
+	[
+		SNew(SCanvas)
+		
+		+ SCanvas::Slot()
+		.Size(WidgetSize)
+		.Position(WidgetPos)
+		[
+			SNew(SImage)
+			//.ColorAndOpacity(FSlateColor(FLinearColor(1, 1, 1, 0.8)))
+			.ColorAndOpacity(FSlateColor::FSlateColor(FLinearColor(FColor::Black.WithAlpha(100))))
+		]
+		+ SCanvas::Slot()
+		.Size(WidgetSize)
+		.Position(WidgetPos)
+		[
+		
+			SNew(SHorizontalBox)
+
+			+SHorizontalBox::Slot()
+			.AutoWidth()
+			[
+				SNew(STextBlock)
+				.Text(ResponseText)
+				.TextStyle(&MenuStyle->DialogueTextStyle)
+				.AutoWrapText(true)
+				.MinDesiredWidth(900)
+
+			]
+
+			+ SHorizontalBox::Slot()
+			.FillWidth(1)
+			[
+				SAssignNew(TopicListBox, SVerticalBox)
+				.Visibility(TopicVisibility)
+
+			]
+
+		]
+
+
+	];
+
+
+	/*
 	FVector2D ResponseWidgetSize = FVector2D(ScreenResolution.X * 0.8, ScreenResolution.Y / 3);
 	FVector2D ResponseWidgetPos = FVector2D(ScreenResolution.X * 0.1 , (ScreenResolution.Y / 3) * 2);
 
@@ -91,7 +142,7 @@ void SDialogueWidget::Construct(const FArguments& args)
 				]
 		];
 
-	
+	*/
 
 	CurrentState = EDialogueState::Idle;
 	SpeakHelloTopic();
@@ -157,11 +208,17 @@ void SDialogueWidget::SpeakResponse()
 		CurrentState = EDialogueState::Speaking;
 	
 	
-		ResponseString = CurrentTopic->ResponseText;
+		//ResponseString = CurrentTopic->ResponseText;
+		ResponseString = CurrentTopic->GetTopicResponse();
 		ResponseDisplayString = "";
 		TypeWriterIndex = 0;
 
-		PC->TypeWriter(ResponseString,ResponseDisplayString,TypeWriterSpeed);
+		float speed = TypeWriterSpeed;
+		if (CurrentTopic->bOverrideTypeWriterSpeed)
+		{
+			speed = CurrentTopic->TypeWriterSpeed;
+		}
+		PC->TypeWriter(ResponseString,ResponseDisplayString,speed);
 		CurrentTopic->StartScript();
 		CurrentTopic->bSpoken = true;
 	}
@@ -188,6 +245,9 @@ void SDialogueWidget::FillRootTopics()
 
 void SDialogueWidget::BuildAndShowMenu()
 {
+
+
+
 	if (CurrentState == EDialogueState::Idle)
 	{
 
@@ -224,7 +284,7 @@ void SDialogueWidget::BuildAndShowMenu()
 							SAssignNew(TempButton, SButton)
 								.TextStyle(&MenuStyle->TopicTextStyle)
 								.ButtonStyle(&MenuStyle->TopicButtonStyle)
-								.Text(FText::FromString(Topic->TopicText))
+								.Text(FText::FromString(Topic->GetTopicText()))
 						];
 
 					if (TopicListButtons.Num() <= 0)
@@ -383,32 +443,31 @@ EVisibility SDialogueWidget::GetTopicVisibility() const
 
 void SDialogueWidget::UpdateState()
 {
-	if (ResponseString == ResponseDisplayString && CurrentState == EDialogueState::Speaking)
+	if (ResponseString == ResponseDisplayString && CurrentState == EDialogueState::Speaking && CurrentTopic)
 	{
 		CurrentState = EDialogueState::FinishedSpeaking;
 		
-		CurrentTopic->StopScript();
-
-		if (CurrentTopic)
+		
+			
+		if (CurrentTopic->ChildrenTopics.Num() > 0)
 		{
-
-
-			if (CurrentTopic->bGoodByeAfterScript)
-			{
-				OnToggleMenu.ExecuteIfBound();
-			}
-			else if (CurrentTopic->ChildrenTopics.Num() > 0)
-			{
-				bInsideBranch = true;
-			}
-			else if (CurrentTopic || bInsideBranch)
-			{
-				bInsideBranch = false;
-				CurrentTopic = nullptr;
-			}
-
-			BuildAndShowMenu();
+			bInsideBranch = true;
 		}
+		else if (bInsideBranch)
+		{
+			bInsideBranch = false;
+			//CurrentTopic = nullptr;
+		}
+
+
+		if (CurrentTopic->bAutoConfirm)
+		{
+			FinishSpeaking();
+		}
+		/*
+		*/
+
+		//BuildAndShowMenu();
 
 
 
@@ -444,6 +503,24 @@ FReply SDialogueWidget::OnFocusReceived(const FGeometry& MyGeometry, const FFocu
 
 
 
+void SDialogueWidget::FinishSpeaking()
+{
+	CurrentState = EDialogueState::Idle;
+	if (CurrentTopic)
+	{
+		CurrentTopic->StopScript();
+
+		if (CurrentTopic->bGoodByeAfterScript)
+		{
+			OnToggleMenu.ExecuteIfBound();
+			return;
+		}
+	}
+
+	BuildAndShowMenu();
+	UpdateHighlightedTopic();
+}
+
 FReply SDialogueWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	FReply Result = FReply::Unhandled();
@@ -457,7 +534,25 @@ FReply SDialogueWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& 
 		//Start button, esc button, b button, no repeats
 		if ((Key == EKeys::Escape || Key == EKeys::Gamepad_Special_Right ||Key == EKeys::Gamepad_FaceButton_Right || Key == EKeys::Global_Play || Key == EKeys::Global_Menu) && !InKeyEvent.IsRepeat())
 		{
-			OnToggleMenu.ExecuteIfBound();
+			if (CurrentState == EDialogueState::Idle)
+			{
+				OnToggleMenu.ExecuteIfBound();
+
+			}
+			else if (CurrentState == EDialogueState::Speaking)
+			{
+				PC->UpdateDelayTime(TypeWriterSpeed * 0.15);
+				//wait until response is finished, else speed up the typewriter!
+			}
+			else if (CurrentState == EDialogueState::FinishedSpeaking)
+			{
+				FinishSpeaking();
+
+			}
+			else
+			{
+
+			}
 			Result = FReply::Handled();
 		}
 		
@@ -487,15 +582,14 @@ FReply SDialogueWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& 
 			}
 			else if (CurrentState == EDialogueState::FinishedSpeaking)
 			{
-				CurrentState = EDialogueState::Idle;
-				BuildAndShowMenu();
-				UpdateHighlightedTopic();
+				FinishSpeaking();
+				
 			}
 			else if (CurrentTopicList.Num() > 0)
 			{
 				ClickSelectedIndex();
 			}
-			else
+			else if (CurrentState == EDialogueState::Idle)
 			{
 				OnToggleMenu.ExecuteIfBound();
 			}

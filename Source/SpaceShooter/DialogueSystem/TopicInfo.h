@@ -4,7 +4,19 @@
 
 #include "TopicInfo.generated.h"
 
-UCLASS()
+
+USTRUCT(BlueprintType)
+struct FResponse
+{
+	GENERATED_USTRUCT_BODY()
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Response;
+
+};
+
+
+
+UCLASS(Blueprintable, BlueprintType, Abstract)
 class SPACESHOOTER_API UTopicInfo : public UObject
 {
 	GENERATED_BODY()
@@ -15,17 +27,34 @@ public:
 	
 	
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Topic")
-		FString TopicText; //inherited from topics topic text
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TopicInfo")
 		FString Prompt;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TopicInfo")
-		TArray<FString> Responses; //should use FResponse instead, that would hold animations/other data
+		TArray<FResponse> Responses; //should use FResponse instead, that would hold animations/other data
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TopicInfo")
 		TArray<AActor*> Conditions;
-		
+
+
+	UFUNCTION(BlueprintCallable, Category = "TopicInfo")
+		bool HasResponse();
+	UFUNCTION(BlueprintCallable, Category = "TopicInfo")
+		bool HasPrompt();
+
+	UFUNCTION(BlueprintCallable, Category = "TopicInfo")
+		FString GetResponse();
+	UFUNCTION(BlueprintCallable, Category = "TopicInfo")
+		FString GetPrompt();
+
+
+
+
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "InfoTopic - Is Active"))
+		bool IsActive();
+
+	FORCEINLINE bool IsActive_Implementation() { return true; }
+
 	/*
 	UFUNCTION(BlueprintImplementable)
 		void BeginScript();

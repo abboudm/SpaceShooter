@@ -25,6 +25,7 @@
 ATrainer::ATrainer(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UClimbingPawnMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 
+	
 	ClimbingMovement = Cast<UClimbingPawnMovementComponent>(Super::GetMovementComponent());
 
 	/*
@@ -67,6 +68,15 @@ ATrainer::ATrainer(const FObjectInitializer& ObjectInitializer) : Super(ObjectIn
 	bSprinting = false;
 	LookYSensitivity = 45;
 	LookXSensitivity = 90;
+	InnerDeadZone = 0.0f;
+	OuterDeadZone = 1.0f;
+	LookAcceleration = 1.0f;
+	InputAccelerationCurve.EditorCurveData.AddKey(0, 0);
+	InputAccelerationCurve.EditorCurveData.AddKey(0.1, 0.4);
+	InputAccelerationCurve.EditorCurveData.AddKey(0.2, 0.6);
+	InputAccelerationCurve.EditorCurveData.AddKey(0.3, 0.8);
+	InputAccelerationCurve.EditorCurveData.AddKey(0.6, 0.9);
+	InputAccelerationCurve.EditorCurveData.AddKey(1,1);
 }
 void ATrainer::NotifyActorEndOverlap(AActor* OtherActor)
 {
@@ -193,49 +203,78 @@ AActor* ATrainer::GetActorInReach()
 void ATrainer::Tick( float DeltaTime )
 {
 	Super::Tick(DeltaTime);
+	
+	//---------------------------------------------------
+	/*
+	From blog post, (find link, google thumbstick dead zones right)
+
+	===========================
+	axial dead zone
+		if abs(x) < deadzone
+			x = 0
+		if abs(y) < deadzone
+			y = 0
+	===========================
+	radial dead zone
+		if(gamepad.size() < deadzone)
+			gamepad = fvector::zero;
+	===========================
+	scaled radial dead zone
+		if size < deadzone
+			zero
+		else
+			StickInput = GamepadCamera.GetSafeNormal() * ((GamepadCamera.Size() - InnerDeadZone) / (1 - InnerDeadZone));
+	=================================================================================
+	fps
+		sometimes you need to sweep your aim through a line, and keep crosshair on or close to line
+		blend a scaled radial with a modified axial deadzone
+			stronger input is on one axis, larger the deadzone gets for other axis
+	=================================================================================
+
+	*/
+
+	//---------------------------------------------------
+	FVector2D StickInput;
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, FString::SanitizeFloat(GamepadCamera.Size()));
+	if (GamepadCamera.Size() < InnerDeadZone)
+	{
+		StickInput = FVector2D::ZeroVector;
+	}
+	else if (GamepadCamera.Size() < OuterDeadZone)
+	{
+		StickInput = GamepadCamera.GetSafeNormal() * ((GamepadCamera.Size() - InnerDeadZone) / (1 - InnerDeadZone));
+
+	}
+	else if (GamepadCamera.Size() > OuterDeadZone)
+	{
+		//add acceleration if not at max turn speed
+		//amt of accel is based on int 1-5, where 5 is almost instant, 1 takes like half a second
+
+		//StickInput = GamepadCamera.GetSafeNormal() * ((GamepadCamera.Size() - InnerDeadZone) / (1 - InnerDeadZone));
+		StickInput = GamepadCamera.GetSafeNormal() * ((GamepadCamera.Size() - InnerDeadZone) / (1 - InnerDeadZone));
+	}
+
+	AddControllerPitchInput(StickInput.Y * (GamepadCamera.Size() * LookYSensitivity) * GetWorld()->GetDeltaSeconds());
+	AddControllerYawInput(StickInput.X * (GamepadCamera.Size() * LookXSensitivity) * GetWorld()->GetDeltaSeconds());
+
+
+
+
+
+
+	//---------------------------------------------------
+	//Trace to see whats in reach for the action button
 	AActor* hit = GetActorInReach();
 	if (hit)
 	{
 		ReachableActor = hit;
-		//Lib::Msg(hit->GetName());
-		/*
-		ALootable* overlappedLoot = Cast<ALootable>(hit);
-		if (overlappedLoot)
-		{
-			if (bActionButtonDown)
-			{
-				//Lib::Msg("HI");
-				PickupLoot(overlappedLoot);
-			}
-
-			else if (!OverlappedLoot)
-			{
-				//Lib::Msg("Action Button Better be UP god dam");
-				OverlappedLoot = overlappedLoot;
-			}
-		}
-		else
-		{
-			Lib::Msg("No Overlap of LOOT!");
-		}
-		*/
-		/*
-		*/
 	}
 	else
 	{
 		ReachableActor = nullptr;
 	}
+	//---------------------------------------------------
 
-	
-	/*
-	if (OverlappedLoot)
-	{
-		bool check = InReach(OverlappedLoot);
-		Lib::Msg(check);
-	}
-	*/
-	
 	/*
 	int width = 100;
 	int height = 100;
@@ -252,11 +291,11 @@ void ATrainer::Tick( float DeltaTime )
 	}
 	
 	UTexture2D *billy = FImageUtils::CreateTexture2D(width, height, src, this,"bob", EObjectFlags::RF_Dynamic, params);
-
-
-
-
 	*/
+
+
+
+
 }
 // Called to bind functionality to input
 void ATrainer::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -519,24 +558,24 @@ void ATrainer::ActionX()
         
         break;
       case EInteractionType::Sign:
-		Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
-
+        Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
         break;
       case EInteractionType::Terminal:
         break;
       case EInteractionType::Character:
-		if (Cast<ABaseTrainer>(ReachableActor))
-		{
-			if (!Cast<ABaseTrainer>(ReachableActor)->Health->Alive)
-			{
-				Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
-			}
-			else
-			{
-				//Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
-				Lib::Msg("You can't pickpocket me!");
-			}
-		}
+        if (Cast<ABaseTrainer>(ReachableActor))
+        {
+          if ((!Cast<ABaseTrainer>(ReachableActor)->Health->Alive) || ClimbingMovement->IsCrouching())
+          {
+            Cast<APlayerCharacterController>(GetController())->ConstructAndShowTradeMenu(ReachableActor);
+          }
+          else
+          {
+            Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
+            //Cast<APlayerCharacterController>(GetController())->ConstructDialogueMenu(ReachableActor);
+            //Lib::Msg("You can't pickpocket me!");
+          }
+        }
         
         break;
       default:
@@ -739,16 +778,30 @@ void ATrainer::MoveRight(float AxisValue)
 	}
 }
 
+
+
 void ATrainer::GamePadPitch(float AxisValue)
 {
-	float value = AxisValue * LookYSensitivity * GetWorld()->GetDeltaSeconds();
-	AddControllerPitchInput(value);
+	
+	/*
+	float input = AxisValue * LookYSensitivity * GetWorld()->GetDeltaSeconds();
+	AddControllerPitchInput(input);
+	*/
+
+
+	GamepadCamera.Y = AxisValue;
 }
 
 void ATrainer::GamePadYaw(float AxisValue)
 {
-	float value = AxisValue * LookXSensitivity * GetWorld()->GetDeltaSeconds();
-	AddControllerYawInput(value);
+	/*
+	float input = AxisValue * LookYSensitivity * GetWorld()->GetDeltaSeconds();
+	AddControllerPitchInput(input);
+	float input = AxisValue * LookXSensitivity * GetWorld()->GetDeltaSeconds();
+	AddControllerYawInput(input);
+
+	*/
+	GamepadCamera.X = AxisValue;
 }
 
 

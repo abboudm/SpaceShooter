@@ -75,6 +75,7 @@ But some of the Super pokemon gain higher sentient functions (smart) and begin t
 Most of the pokemon are persuaded by the Supers, and they join up with the surviving rebels, and start a new civil war.
 
 With Monsters of Legendary Strength leading the war (Mewtwo/Charizard) rebels and monsters defeat the UNSC.
+  //this is sorta a tag line, like not the wording per say, but using the word strength. like its a "ancient power" people dare not use/disturb, or idk. itd be the end game appeal to possess this "power"
 
 They take out all of the UNSC leaders, and anarchy ensues across the galaxy.
 
@@ -324,6 +325,113 @@ room 9:
 			-like maybe you get inventory upgrades from here by talking to digitizer scientists and getting some upgrade items that are in development
 		***Space artifacts***
 		-see collectibles in GameFactors, but these could be college specific
+
+
+
+
+    =====================
+    Terrain & Landscaping
+    =====================
+
+    So the game would be split up into [10] planets
+    for starters, each planet would be represented on a map (starfox)
+    you pick a planet to go to and "fly" there, great
+
+    Future goal could be an illusory "space world" where you:
+      get to where you parked your ship, on the planet
+      real time, get in and fly away, seen a few dev videos do it, and a think no mans land does it? idk some AAA does it
+      the planets orbit could then be a big space battle area or exploration zone
+      you could then "hyperspeed" fly off to the next planet you want to visit
+
+
+    Anyway, however we present the "world map", you'll have planets to visit
+    Eeach planet would be chunked off into "cells"
+    each cell would be a new map, in the unreal editor
+    the planet then would just be a stitching/level streaming of all the required chunks/cells
+    thats my best guess how to do a skyrim/fallout world. 
+
+
+    Lets get some numbers goin
+
+    Bethesda's in game cell is 57.6 meters per side (i dont think that has to include z)
+    //50m is over half a football field!
+
+    Cell = 57m^2
+    
+    Skyrim's Map is
+      119 x 94 cells  - 11,186 total cells
+      ~ 37.1 km^2 or 14.3 miles^2
+      for further comparison, GTAV is ~80km^2 and Witcher 3 is way above 150km^2 
+    Fallout 4
+      84 x 84 cells
+
+    So im thinking, Planets should be  50 cells^2 < planetsize < 90 cells^2
+
+    So obviously, making full planets is a huge, and potentially, late game project
+    but on the other hand, the way we would get away with 9 skyrim sized levels would be space
+    look at fallout, its a smaller map than skyrim, but still has ~300 waypoints (skyrim has ~300 too)
+    the main difference i felt playing the two is you dont need to travel as much in fallout
+    skyrim has a ton of mountains you have to walkaround, but still presents a much "bigger" world to explore (waypoints are more spread out)
+    So instead of scattering 300 waypoints in 1 big world, we'd do it over [10] planets!
+    this would also be a good way of implementing vehicles/various modes of transportation (get quest in city, drive up to the mountains, stuff to explore on the way,maybe a few caves/hidden treasure, but its mostly wilderness/wildlife)
+    this is what i think witcher did, but i mean, that game is a fucking beast when it comes to size of world/stuff to do ratio, gtav too, but you can get planes/cars in gta, so size is somewhat lost in comparison
+
+    In the mean time, level design can start focusing in on a single cells, and building a set of objects/structures that define a planet
+
+    the following are then goals/ideas to achieve in level making - basically themes
+
+    Cities
+      some cloud city, sounds cool, maybe its located on some gas planet
+      skyrim like cities - markarth,whiterun, something mildly castley, but relatively small
+      slums/fallout  - e.g. the entire commonwealth could be a "planet" 
+      seattle/san andres - a "mega" city that isn't a nuclear fallout, way bigger than markarth
+                          -these mega cities, would be the entire planet. like a whole planet made of concrete and metal
+
+    Caves
+      basic component, but it would have its own set of walls/floors/decor (rocks/ice instead of flat walls)
+
+    Plains/Mountains
+      whiterun to markarth trail - open roads, hills, small village
+      caves/hills/valleys/probably faster to drive than walk kinda field
+    
+    TallMountains/Himalays
+      farcry basically - just lots of mountains to grapple up and glide suit down
+      death mountain/goron city!
+
+    Volcano/Pits of hell
+      some firey place, dark souls like. magma, demon monster, the works
+      dark souls / lotr
+
+    Sand/Desert
+      tatooine,spirit temple,indiana jones
+
+    Atlantis/WaterWorld
+      could just be a big ocean planet with a floating dock like place for fish and whatever
+      maybe a few small islands /oil rig
+      but when you get a pokemen to allow you to dive/swim underwater
+        theres a huge bubble world built by marine biologists!
+        or the institute!
+
+    Frozen Tundra/ Ice Caves
+      Alaska, ice madness
+
+    Forests/Wilderness
+      thick forests, marshs/wetlands, the beginning of lotr
+
+    Castles/Fortresses
+      Dark souls style, grand palace type place
+      military base, carrier ship, Fort Briggs, military compound
+
+    SpaceStation/PodLife
+      this is the "world" that you would enter to go inside a house
+      could be a space station in space
+      could be the bubble world in atlantis
+      could be a small 1 room hut
+
+    Asteroid/Moon
+      picture mario galaxy / those commercials for destiny, way smaller than a planet, but still bigger than a SpaceStation
+
+
 -------------------------------------------------------------------------------------------------------------------------------------
 													Game Factors
 -------------------------------------------------------------------------------------------------------------------------------------

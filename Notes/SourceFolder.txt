@@ -16,6 +16,23 @@ Blueprints
 			mess with the climbing component inside PlayerCharacter, to mess with all the movement settings!
 
 =================================================================================================================
+Dialogue System
+=================================================================================================================
+  Branch
+  Topic
+  Info
+  Widget
+  Menu
+    TODO: document these
+=================================================================================================================
+Quest System
+=================================================================================================================
+  Quest
+  Stage
+  Objective
+  Alias
+    TODO: document these, also write them
+=================================================================================================================
 UI
 =================================================================================================================
 	IngameHUD - this is just a test widget, will be removing this eventually, but its a good reference for making other widgets

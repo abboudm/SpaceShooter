@@ -8,7 +8,7 @@
 #include "Characters/Trainer.h"
 #include "UI/SpaceHUD.h"
 #include "DialogueSystem/DialogueWidget.h"
-
+#include "Components/InteractionComponent.h"
 
 void APlayerCharacterController::Typer()
 {
@@ -17,7 +17,7 @@ void APlayerCharacterController::Typer()
 	if (ResponseString != *DisplayString)
 	{
 	
-		GEngine->AddOnScreenDebugMessage(-1, 0.5, FColor::Yellow, "typewriting");
+		//GEngine->AddOnScreenDebugMessage(-1, 0.5, FColor::Yellow, "typewriting");
 		*DisplayString += ResponseString.GetCharArray().GetData()[TypeWriterIndex];
 		TypeWriterIndex++;
 		GetWorldTimerManager().SetTimer(TypeWriterHandle, this, &APlayerCharacterController::Typer, TypeWriterSpeed, false);
@@ -26,7 +26,10 @@ void APlayerCharacterController::Typer()
 	{
 		TypeWriterIndex = -1;
 		ResponseString = "";
-		DialogueMenu->UpdateDialogueState();
+		if (DialogueMenu.IsValid())
+		{
+			DialogueMenu->UpdateDialogueState();
+		}
 		//DialogueWidget->UpdateState();
 	}
 	/*
@@ -62,23 +65,24 @@ void APlayerCharacterController::TypeWriter(FString finalstring, FString& displa
 		ResponseString = finalstring;
 		TypeWriterIndex = 0;
 		TypeWriterSpeed = delaytime;
+
+
+		//Immediately fill out the first char now, without waiting
+		*DisplayString += ResponseString.GetCharArray().GetData()[TypeWriterIndex];
+		TypeWriterIndex++;
+
+		//this is why typewriter has to be in controller - couldn't run this line inside a widget, had to be an actor
 		GetWorldTimerManager().SetTimer(TypeWriterHandle, this, &APlayerCharacterController::Typer,TypeWriterSpeed, false);
-	/*
-	if (dialogue.IsValid())
-	{
-		DialogueWidget = dialogue;
-	}
-	*/
-
+	
 }
-
-
 
 void APlayerCharacterController::UpdateDelayTime(float updatedtime)
 {
 	TypeWriterSpeed = updatedtime;
 
 }
+
+
 
 
 
@@ -127,18 +131,23 @@ void APlayerCharacterController::BeginPlay()
 
 void APlayerCharacterController::ConstructDialogueMenu(AActor* other)
 {
-	if (!IsGameMenuUp())
-	{
-		//GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, other->GetName());
-		DialogueMenu = MakeShareable(new FDialogueMenu());
-		if (DialogueMenu.IsValid())
-		{
-			DialogueMenu->Construct(this, other);
-			DialogueMenu->ToggleGameMenu();
+	if (other->FindComponentByClass<class UInteractionComponent>()->Branchs.Num() > 0)
+  {
+    if (!IsGameMenuUp())
+    {
+      //GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Red, other->GetName());
+      DialogueMenu = MakeShareable(new FDialogueMenu());
+      if (DialogueMenu.IsValid())
+      {
+        DialogueMenu->Construct(this, other);
+        DialogueMenu->ToggleGameMenu();
 
-		}
-	}
+      }
+    }
+  }
 }
+
+
 
 
 void APlayerCharacterController::ConstructAndShowTradeMenu(AActor* other)
@@ -155,7 +164,6 @@ void APlayerCharacterController::ConstructAndShowTradeMenu(AActor* other)
 		}
 	}
 }
-
 void APlayerCharacterController::OnToggleInGameMenu()
 {
 	if (!IsGameMenuUp())
@@ -174,7 +182,6 @@ void APlayerCharacterController::OnToggleInGameMenu()
 		}
 	}
 }
-
 bool APlayerCharacterController::IsGameMenuUp() { return bGameMenuUp; }
 void APlayerCharacterController::SetGameMenuUp(bool isup) { bGameMenuUp = isup; }
 

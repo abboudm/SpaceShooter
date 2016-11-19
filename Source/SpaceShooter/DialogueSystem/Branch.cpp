@@ -1,6 +1,7 @@
 
 #include "SpaceShooter.h"
 #include "DialogueSystem/Topic.h"
+#include "DialogueSystem/TopicInfo.h"
 #include "Branch.h"
 
 UBranch::UBranch(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -30,6 +31,15 @@ UTopic* UBranch::SetupTopic(UObject* Outer, TSubclassOf<class UTopic> TopicClass
 		for (TSubclassOf<class UTopic> ChildTopicClass : out->ChildrenTopicClasses)
 		{
 			out->ChildrenTopics.Add(SetupTopic(Outer, ChildTopicClass));
+		
+		}
+		for (TSubclassOf<class UTopicInfo> InfoClass : out->InfoClasses)
+		{
+
+			out->Infos.Add(NewObject<UTopicInfo>(Outer, InfoClass));
+			//
+			//out->ChildrenTopics.Add(SetupTopic(Outer, ChildTopicClass));
+
 		}
 	}
 	/*

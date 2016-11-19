@@ -125,6 +125,7 @@ void FGameAnalogCursor::Tick(const float DeltaTime, FSlateApplication& SlateApp,
 			}
 		}
 
+		
 		//grab the cursor acceleration
 		const FVector2D AccelFromAnalogStick = GetAnalogCursorAccelerationValue(GetAnalogValues(), DPIScale);
 
@@ -180,7 +181,7 @@ void FGameAnalogCursor::Tick(const float DeltaTime, FSlateApplication& SlateApp,
 		}
 	}
 }
-
+			
 FVector2D FGameAnalogCursor::GetAnalogCursorAccelerationValue(const FVector2D& AnalogValues, float DPIScale)
 {
 	const UGameGlobals* Settings = GetDefault<UGameGlobals>();
