@@ -37,7 +37,7 @@ public:
 		bool bOptional;
 	
 	
-	
+	/*
 	Quest Alias
 {
 	AliasType	-Reference Alias || Location Alias
@@ -56,6 +56,7 @@ ReferenceAliasType
 		Inventory
 		Spells/Weapons
 }
+	*/
 	
 	
 

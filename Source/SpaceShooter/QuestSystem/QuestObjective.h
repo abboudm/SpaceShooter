@@ -34,7 +34,7 @@ public:
 	
 	
 	//QuestTarget	-this is the map marker/waypoint that is then set
-}
+
 
 
 };

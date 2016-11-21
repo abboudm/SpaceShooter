@@ -152,11 +152,12 @@ QuestManager
 		bool bGameStart;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool bAllowedRepeatStages;
-	
+	/*
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "Quest - Is Active"))
 		bool IsActive();
 
 	FORCEINLINE bool IsActive_Implementation() { return true; }
+	*/
 
 
 
