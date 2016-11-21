@@ -1,0 +1,45 @@
+Areas of Development:
+
+Game Design
+	- quest system
+	- Item masterlit
+	- Story/Backstory/Lore
+	- Character design
+	- Areas
+	- types of damages
+	- Character upgrade
+
+Level Design
+	- Landscaping/foliage
+	- Actual levels
+	- tutorial levels
+	- worlds/caves
+	
+Creature
+	- Types, strengths, attacks, etc
+	- everything about pokemon
+
+Misc (Still really important)
+	- NPC templates and uniques
+	- Flow of gameplay
+	- CoOp and Networking
+	- character menus
+	- AI
+	- button mapping
+
+UI
+	- Overall UI work
+	- Terminal type object?
+
+Items
+	- items/grapple hook
+	- upgrades/loot
+	- crafting/cooking
+	- vehicles
+	- armor/equips
+
+Assets
+	- Materials
+	- animations
+	- audio
+	- particle effects
